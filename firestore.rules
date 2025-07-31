@@ -25,5 +25,41 @@ service cloud.firestore {
                             request.auth.uid == userId &&
                             validPreferences(request.resource.data.preferences);
     }
+
+    match /businesses/{businessId} {
+      allow read, write: if request.auth != null && request.auth.uid == businessId;
+
+      match /settings/eposConfig/{docId} {
+        allow read, write: if request.auth != null && request.auth.uid == businessId;
+      }
+
+      match /inventory/{docId} {
+        allow read, write: if request.auth != null && request.auth.uid == businessId;
+      }
+
+      match /sales/{docId} {
+        allow read, write: if request.auth != null && request.auth.uid == businessId;
+      }
+
+      match /rules/{docId} {
+        allow read, write: if request.auth != null && request.auth.uid == businessId;
+      }
+
+      match /activeDeal/{docId} {
+        allow read, write: if request.auth != null && request.auth.uid == businessId;
+      }
+
+      match /analytics/{docId} {
+        allow read, write: if request.auth != null && request.auth.uid == businessId;
+      }
+
+      match /ruleAdjustments/{docId} {
+        allow read, write: if request.auth != null && request.auth.uid == businessId;
+      }
+
+      match /notifications/{docId} {
+        allow read, write: if request.auth != null && request.auth.uid == businessId;
+      }
+    }
   }
 }
