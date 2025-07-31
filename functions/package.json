@@ -16,6 +16,13 @@
     "xml2js": "^0.4.0",
     "csv-parser": "^3.0.0",
     "@google-cloud/storage": "^6.0.0",
-    "uuid": "^9.0.0"
+    "uuid": "^9.0.0",
+    "square": "^19.0.0",
+    "shopify-api-node": "^6.0.0",
+    "lightspeed-pos": "^1.0.0",
+    "clover-sdk": "^1.0.0",
+    "toast-pos": "^1.0.0",
+    "vend-pos": "^1.0.0",
+    "eposnow-sdk": "^1.0.0"
   }
 }

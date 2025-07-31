@@ -56,7 +56,9 @@ async function fetchEposMetrics(businessId) {
         inventoryData = await adapter.fetchInventory({ since });
       }
     } catch (err) {
-      console.error(`EPOS adapter failed for ${businessId}:`, err);
+      const provider = adapter.constructor?.name || 'unknown';
+      const message = err?.response?.data || err.message;
+      console.error(`EPOS adapter ${provider} failed for ${businessId}:`, message);
     }
   }
 
@@ -320,7 +322,9 @@ exports.scheduledRuleCheck = functions.pubsub
             inventoryData = await adapter.fetchInventory({ since });
           }
         } catch (err) {
-          console.error(`EPOS adapter failed for ${businessId}:`, err);
+          const provider = adapter.constructor?.name || 'unknown';
+          const message = err?.response?.data || err.message;
+          console.error(`EPOS adapter ${provider} failed for ${businessId}:`, message);
         }
       }
 
