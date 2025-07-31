@@ -115,3 +115,13 @@ typically include:
 Adapters read these values via `adapter.config` inside Cloud Functions. Update
 the `eposConfig` document with the required keys for your provider before using
 any EPOS features.
+
+### Provider Specific Fields
+
+- **Square**: `apiKey` (Square access token), `locationId`
+- **Lightspeed**: `apiKey` (OAuth token), `accountId`
+- **Clover**: `apiKey`, `merchantId`
+- **Toast**: `apiKey`, `restaurantId`
+- **Shopify**: `apiKey` (private app token), `shop` (e.g. `myshop.myshopify.com`)
+- **Vend**: `apiKey`, `outletId`
+- **EposNow**: `apiKey`, `businessId`
