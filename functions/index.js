@@ -48,13 +48,22 @@ exports.evaluateSmartDeals = functions.https.onCall(async (data, context) => {
   return { evaluated };
 });
 
-exports.generateAISmartDealSuggestion = functions.https.onCall(async (data, context) => {
-  const keywords = data.keywords || [];
-  const suggestions = keywords.map((word) => ({
+function buildAiSuggestions(keywords = []) {
+  return keywords.map((word) => ({
     id: uuidv4(),
     title: `Smart deal for ${word}`,
     description: `Automatically generated suggestion for ${word}`,
   }));
+}
+
+exports.generateAISmartDealSuggestion = functions.https.onCall(async (data, context) => {
+  const suggestions = buildAiSuggestions(data.keywords || []);
+  return { suggestions };
+});
+
+// Expose AI recommendation hook for future integration
+exports.aiRecommendation = functions.https.onCall(async (data, context) => {
+  const suggestions = buildAiSuggestions(data.keywords || []);
   return { suggestions };
 });
 

@@ -13,3 +13,13 @@ firebase deploy --only functions
 ```
 
 Ensure that you have initialized Firebase for this project and are logged in using the Firebase CLI before running the deployment command.
+
+## Packaging a Release
+
+To bundle the cloud functions, iOS source and any available PDF documentation into a single archive run:
+
+```bash
+bash scripts/package_release.sh
+```
+
+The script produces `SmartDeal_release.zip` in the repository root containing the `functions/`, `Application/`, `Controllers/`, `Common/` and `Resources/` directories along with any `*.pdf` files it finds.
