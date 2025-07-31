@@ -40,6 +40,59 @@ async function loadEposAdapter(businessId) {
   }
 }
 
+async function fetchEposMetrics(businessId) {
+  const adapter = await loadEposAdapter(businessId);
+  let salesData = [];
+  let inventoryData = [];
+
+  if (adapter) {
+    try {
+      const since = new Date();
+      since.setDate(since.getDate() - 7);
+      if (typeof adapter.fetchSales === 'function') {
+        salesData = await adapter.fetchSales({ since });
+      }
+      if (typeof adapter.fetchInventory === 'function') {
+        inventoryData = await adapter.fetchInventory({ since });
+      }
+    } catch (err) {
+      console.error(`EPOS adapter failed for ${businessId}:`, err);
+    }
+  }
+
+  const salesTotal = Array.isArray(salesData)
+    ? salesData.reduce((sum, s) => sum + (s.total || s.amount || 0), 0)
+    : 0;
+  const inventoryTotal = Array.isArray(inventoryData)
+    ? inventoryData.reduce((sum, i) => sum + (i.quantity || 0), 0)
+    : 0;
+
+  return { salesTotal, inventoryTotal };
+}
+
+async function writeDealHistoryEntry(businessId, entry) {
+  try {
+    await admin
+      .firestore()
+      .collection('businesses')
+      .doc(businessId)
+      .collection('analytics')
+      .doc('deals')
+      .collection('history')
+      .add(entry);
+  } catch (err) {
+    console.error(`Failed to log deal history for ${businessId}:`, err);
+  }
+}
+
+async function logDealActivation(businessId, entry = {}) {
+  const data = {
+    timestamp: admin.firestore.FieldValue.serverTimestamp(),
+    ...entry,
+  };
+  await writeDealHistoryEntry(businessId, data);
+}
+
 exports.fetchExternalData = functions.https.onRequest(async (req, res) => {
   try {
     const response = await axios.get('https://example.com/data.xml');
@@ -197,6 +250,11 @@ exports.assignDealsToUsersByPreference = functions.firestore
       before.status !== 'active' && after.status === 'active';
     if (created || statusActivated) {
       await assignDealsToUsersByPreferenceInternal(context.params.dealId, after);
+      const businessId = after.userId;
+      if (businessId) {
+        const metrics = await fetchEposMetrics(businessId);
+        await logDealActivation(businessId, { ruleId: after.ruleId, ...metrics });
+      }
     }
     return null;
   });
@@ -310,17 +368,7 @@ exports.scheduledRuleCheck = functions.pubsub
         } catch (err) {
           console.error(`Failed to create activeDeal for ${businessId}:`, err);
         }
-        try {
-          await db
-            .collection('businesses')
-            .doc(businessId)
-            .collection('analytics')
-            .doc('deals')
-            .collection('history')
-            .add(dealData);
-        } catch (err) {
-          console.error(`Failed to log deal history for ${businessId}:`, err);
-        }
+        await logDealActivation(businessId, { ruleId: result.ruleId, salesTotal, inventoryTotal });
       }
       } catch (err) {
         console.error(`Error processing business ${businessId}:`, err);
