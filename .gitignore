@@ -60,3 +60,10 @@ fastlane/report.xml
 fastlane/Preview.html
 fastlane/screenshots/**/*.png
 fastlane/test_output
+
+# Node modules from Firebase functions
+functions/node_modules/
+functions/package-lock.json
+
+# Release packages
+SmartDeal_release.zip
