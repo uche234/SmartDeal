@@ -682,6 +682,24 @@ class FirestoreManager {
             }
         }
     }
+
+    func fetchAvailableDeals(completion: @escaping ([DealItem]?)->Void) {
+        guard let userId = FirestoreManager.shared.currentUser?.uid else {
+            Coordinator.redirectToAuth()
+            return
+        }
+
+        db.collection("users")
+            .document(userId)
+            .collection("availableDeals")
+            .getDocuments { snapshot, error in
+                guard error == nil else { return completion(nil) }
+
+                var result = (snapshot?.documents ?? []).compactMap { DealItem($0) }
+                result = result.filter { $0.approved && !$0.isExpired }
+                completion(result)
+            }
+    }
     
     func updateDealRating(_ value: Int, dealId: String, completion: @escaping (String?)->Void) {
         guard let userId = FirestoreManager.shared.currentUser?.uid else {

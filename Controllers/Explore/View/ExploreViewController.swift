@@ -99,11 +99,13 @@ class ExploreViewController: UIViewController {
             collectionView.startActivityAnimating()
         }
         
-        FirestoreManager.shared.fetchDeals(for: LocationTrakingManager.shared.lastLocation?.location, enableOnline: true) { [weak self] data in
+        FirestoreManager.shared.fetchAvailableDeals { [weak self] data in
             guard let self = self else { return }
 
             self.collectionView.stopActivityAnimating()
-            self.fetchedDeals = data?.filter { $0.approved }
+            let deals = data?.filter { $0.approved } ?? []
+            let location = LocationTrakingManager.shared.lastLocation?.location
+            self.fetchedDeals = self.filterDealsBy(location: location, enableOnline: true, deals: deals)
             self.updateData()
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.6) {
                 self.refreshControl.endRefreshing()
@@ -112,6 +114,21 @@ class ExploreViewController: UIViewController {
         
         UserManager.shared.updateBookmarks { [weak self] in
             self?.collectionView.reloadData()
+        }
+    }
+
+    private func filterDealsBy(location: DBLocation?, enableOnline: Bool, deals: [DealItem]) -> [DealItem] {
+        return deals.filter { item in
+            var result = false
+
+            if let location = location, let compare = item.location {
+                result = compare.latitude > location.region.minLat &&
+                    compare.longitude > location.region.minLon &&
+                    compare.latitude < location.region.maxLat &&
+                    compare.longitude < location.region.maxLon
+            }
+
+            return result || (enableOnline && item.isOnlineStore)
         }
     }
     
