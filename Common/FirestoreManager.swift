@@ -24,6 +24,8 @@ let COLLECTION_TOKENS = "Tokens"
 let COLLECTION_REPORTS = "Reports"
 let COLLECTION_RATINGS = "Ratings"
 let COLLECTION_DELETION_QUEUE = "DeletionQueue"
+let COLLECTION_RULES = "Rules"
+let COLLECTION_ANALYTICS = "Analytics"
 
 class FirestoreManager {
     static let shared: FirestoreManager = FirestoreManager()
@@ -873,11 +875,64 @@ class FirestoreManager {
             Coordinator.redirectToAuth()
             return
         }
-        
+
         let data: [String:Any] = ["userID": userId, "dealID": dealId, "text": text, "date" : Timestamp(date: Date())]
         db.collection(COLLECTION_REPORTS)
             .addDocument(data: data) { error in
                 completion(error == nil ? nil : Constants.Error.unexpectedError)
+        }
+    }
+
+    //MARK: - Rules
+    func fetchRules(completion: @escaping ([Rule]?)->Void) {
+        db.collection(COLLECTION_RULES).getDocuments { snapshot, error in
+            guard error == nil else { return completion(nil) }
+
+            let result = (snapshot?.documents ?? []).compactMap { Rule($0) }
+            completion(result)
+        }
+    }
+
+    func addRule(_ rule: Rule, completion: @escaping (String?)->Void) {
+        db.collection(COLLECTION_RULES).addDocument(data: rule.data) { error in
+            completion(error == nil ? nil : Constants.Error.unexpectedError)
+        }
+    }
+
+    func updateRule(_ rule: Rule, completion: @escaping (String?)->Void) {
+        db.collection(COLLECTION_RULES).document(rule.documentId).setData(rule.data, merge: true) { error in
+            completion(error == nil ? nil : Constants.Error.unexpectedError)
+        }
+    }
+
+    func deleteRule(id: String, completion: @escaping (String?)->Void) {
+        db.collection(COLLECTION_RULES).document(id).delete { error in
+            completion(error == nil ? nil : Constants.Error.unexpectedError)
+        }
+    }
+
+    //MARK: - Analytics
+    func fetchAnalyticsEvents(dealId: String, completion: @escaping ([AnalyticsEvent]?)->Void) {
+        db.collection(COLLECTION_ANALYTICS)
+            .whereField(AnalyticsEventKey.dealId, isEqualTo: dealId)
+            .order(by: AnalyticsEventKey.date, descending: true)
+            .getDocuments { snapshot, error in
+                guard error == nil else { return completion(nil) }
+
+                let result = (snapshot?.documents ?? []).compactMap { AnalyticsEvent($0) }
+                completion(result)
+        }
+    }
+
+    func addAnalyticsEvent(_ event: AnalyticsEvent, completion: @escaping (String?)->Void) {
+        db.collection(COLLECTION_ANALYTICS).addDocument(data: event.data) { error in
+            completion(error == nil ? nil : Constants.Error.unexpectedError)
+        }
+    }
+
+    func deleteAnalyticsEvent(id: String, completion: @escaping (String?)->Void) {
+        db.collection(COLLECTION_ANALYTICS).document(id).delete { error in
+            completion(error == nil ? nil : Constants.Error.unexpectedError)
         }
     }
 }
