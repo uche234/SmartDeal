@@ -24,6 +24,9 @@ struct ProfileKey {
     static let isOnlineStore = "isOnlineStore"
     static let userId = "userId"
     static let lastLocation = "lastLocation"
+    static let preferences = "preferences"
+    static let interests = "interests"
+    static let preferredBusinessTypes = "preferredBusinessTypes"
 }
 
 enum ProfileType: Codable {
@@ -52,6 +55,11 @@ enum ProfileType: Codable {
     }
 }
 
+struct Preferences: Codable {
+    var interests: [String] = []
+    var preferredBusinessTypes: [String] = []
+}
+
 struct Profile: Codable {
     let uid: String
     let email: String
@@ -59,8 +67,9 @@ struct Profile: Codable {
     var surname: String = ""
     var type: ProfileType
     var avatarUrl: URL?
-    
-    
+    var preferences: Preferences = Preferences()
+
+
     //for Business Owner
     var category: String = ""
     var businessName: String = ""
@@ -101,7 +110,12 @@ struct Profile: Codable {
         self.gender = Gender(rawValue: data[ProfileKey.gender] as? String ?? "")
         self.avatarUrl = URL(string: data[ProfileKey.avatar] as? String ?? "")
         self.creationDate = creationDate.dateValue()
-        
+
+        if let prefData = data[ProfileKey.preferences] as? [String: Any] {
+            self.preferences.interests = prefData[ProfileKey.interests] as? [String] ?? []
+            self.preferences.preferredBusinessTypes = prefData[ProfileKey.preferredBusinessTypes] as? [String] ?? []
+        }
+
         //For Business Owener
         self.category = data[ProfileKey.category] as? String ?? ""
         self.category = data[ProfileKey.category] as? String ?? ""
