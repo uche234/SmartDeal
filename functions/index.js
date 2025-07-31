@@ -67,6 +67,67 @@ exports.aiRecommendation = functions.https.onCall(async (data, context) => {
   return { suggestions };
 });
 
+async function assignDealsToUsersByPreferenceInternal(dealId, dealData) {
+  const category = dealData?.rule?.category;
+  const businessType = dealData?.businessType;
+  const db = admin.firestore();
+
+  const userMatches = new Map();
+
+  if (category) {
+    const interestSnap = await db
+      .collection('users')
+      .where('preferences.interests', 'array-contains', category)
+      .get();
+    interestSnap.forEach((doc) => {
+      if (!userMatches.has(doc.id)) {
+        userMatches.set(doc.id, 'interest');
+      }
+    });
+  }
+
+  if (businessType) {
+    const typeSnap = await db
+      .collection('users')
+      .where('preferences.preferredBusinessTypes', 'array-contains', businessType)
+      .get();
+    typeSnap.forEach((doc) => {
+      if (!userMatches.has(doc.id)) {
+        userMatches.set(doc.id, 'businessType');
+      }
+    });
+  }
+
+  const batch = db.batch();
+  userMatches.forEach((matchedBy, userId) => {
+    const ref = db
+      .collection('users')
+      .doc(userId)
+      .collection('availableDeals')
+      .doc(dealId);
+    batch.set(ref, { ...dealData, matchedBy });
+  });
+
+  if (userMatches.size > 0) {
+    await batch.commit();
+  }
+}
+
+exports.assignDealsToUsersByPreference = functions.firestore
+  .document('Deals/{dealId}')
+  .onWrite(async (change, context) => {
+    if (!change.after.exists) return null;
+    const before = change.before.data() || {};
+    const after = change.after.data() || {};
+    const created = !change.before.exists;
+    const statusActivated =
+      before.status !== 'active' && after.status === 'active';
+    if (created || statusActivated) {
+      await assignDealsToUsersByPreferenceInternal(context.params.dealId, after);
+    }
+    return null;
+  });
+
 exports.dispatchNotifications = functions.firestore
   .document('PendingDeals/{dealId}')
   .onUpdate(async (change, context) => {
@@ -92,6 +153,7 @@ exports.dispatchNotifications = functions.firestore
         await admin.messaging().sendMulticast(message);
       }
       await admin.firestore().collection('Deals').doc(change.after.id).set(after);
+      await assignDealsToUsersByPreferenceInternal(change.after.id, after);
       await change.after.ref.delete();
     }
     return null;
