@@ -19,6 +19,20 @@ service cloud.firestore {
       }
     }
 
+    match /customer/{userId} {
+      allow read: if request.auth != null && request.auth.uid == userId;
+
+      match /preferences/{docId} {
+        allow read, write: if request.auth != null &&
+                            request.auth.uid == userId &&
+                            validPreferences(request.resource.data);
+      }
+
+      match /availableDeals/{docId} {
+        allow read, write: if request.auth != null && request.auth.uid == userId;
+      }
+    }
+
     match /Business/{userId} {
       allow read: if request.auth != null && request.auth.uid == userId;
       allow create, update: if request.auth != null &&
