@@ -125,46 +125,52 @@ async function assignDealsToUsersByPreferenceInternal(dealId, dealData) {
 
   const userMatches = new Map();
 
+  const queries = [];
+
   if (category) {
-    try {
-      const interestSnap = await db
-        .collection('users')
-        .where('preferences.interests', 'array-contains', category)
-        .get();
-      interestSnap.forEach((doc) => {
-        if (!userMatches.has(doc.id)) {
-          userMatches.set(doc.id, 'interest');
-        }
+    const q = db
+      .collectionGroup('preferences')
+      .where('interests', 'array-contains', category)
+      .get()
+      .then((snap) => {
+        snap.forEach((doc) => {
+          const userId = doc.ref.parent.parent && doc.ref.parent.parent.id;
+          if (userId && !userMatches.has(userId)) {
+            userMatches.set(userId, 'interest');
+          }
+        });
+      })
+      .catch((err) => {
+        console.error(`Failed fetching interest users for deal ${dealId}:`, err);
       });
-    } catch (err) {
-      console.error(`Failed fetching interest users for deal ${dealId}:`, err);
-    }
+    queries.push(q);
   }
 
   if (businessType) {
-    try {
-      const typeSnap = await db
-        .collection('users')
-        .where(
-          'preferences.preferredBusinessTypes',
-          'array-contains',
-          businessType
-        )
-        .get();
-      typeSnap.forEach((doc) => {
-        if (!userMatches.has(doc.id)) {
-          userMatches.set(doc.id, 'businessType');
-        }
+    const q = db
+      .collectionGroup('preferences')
+      .where('preferredBusinessTypes', 'array-contains', businessType)
+      .get()
+      .then((snap) => {
+        snap.forEach((doc) => {
+          const userId = doc.ref.parent.parent && doc.ref.parent.parent.id;
+          if (userId && !userMatches.has(userId)) {
+            userMatches.set(userId, 'businessType');
+          }
+        });
+      })
+      .catch((err) => {
+        console.error(`Failed fetching business type users for deal ${dealId}:`, err);
       });
-    } catch (err) {
-      console.error(`Failed fetching business type users for deal ${dealId}:`, err);
-    }
+    queries.push(q);
   }
+
+  await Promise.all(queries);
 
   const batch = db.batch();
   userMatches.forEach((matchedBy, userId) => {
     const ref = db
-      .collection('users')
+      .collection('customer')
       .doc(userId)
       .collection('availableDeals')
       .doc(dealId);
