@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="metropolis.medium.otf">
+            <string>Metropolis-Medium</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="gTV-IL-0wX" customClass="CategoryCollectionViewCell" customModule="Dilblitz" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="100" height="82"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                <rect key="frame" x="0.0" y="0.0" width="100" height="82"/>
+                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                <subviews>
+                    <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="R7Y-uy-zSX" userLabel="ContentView">
+                        <rect key="frame" x="0.0" y="0.0" width="100" height="82"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Food" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0rq-pQ-EFQ">
+                                <rect key="frame" x="35" y="54" width="30.5" height="15.5"/>
+                                <fontDescription key="fontDescription" name="Metropolis-Medium" family="Metropolis" pointSize="13"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="uri-2B-jDR">
+                                <rect key="frame" x="33" y="10" width="34" height="34"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="34" id="6cD-fi-tgz"/>
+                                    <constraint firstAttribute="width" secondItem="uri-2B-jDR" secondAttribute="height" multiplier="1:1" id="Yf9-oE-O1i"/>
+                                </constraints>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" name="searchBg"/>
+                        <constraints>
+                            <constraint firstItem="0rq-pQ-EFQ" firstAttribute="top" secondItem="uri-2B-jDR" secondAttribute="bottom" constant="10" id="9ss-Cm-7lI"/>
+                            <constraint firstItem="uri-2B-jDR" firstAttribute="centerX" secondItem="R7Y-uy-zSX" secondAttribute="centerX" id="VbE-al-btC"/>
+                            <constraint firstItem="0rq-pQ-EFQ" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="R7Y-uy-zSX" secondAttribute="leading" constant="4" id="VoW-7S-Jve"/>
+                            <constraint firstItem="0rq-pQ-EFQ" firstAttribute="centerX" secondItem="R7Y-uy-zSX" secondAttribute="centerX" id="f7z-8u-aS9"/>
+                            <constraint firstItem="uri-2B-jDR" firstAttribute="top" secondItem="R7Y-uy-zSX" secondAttribute="top" constant="10" id="gNk-LK-Z2a"/>
+                        </constraints>
+                    </view>
+                </subviews>
+            </view>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="R7Y-uy-zSX" secondAttribute="trailing" id="4Y7-70-5Oe"/>
+                <constraint firstAttribute="bottom" secondItem="R7Y-uy-zSX" secondAttribute="bottom" id="7r1-im-90l"/>
+                <constraint firstItem="R7Y-uy-zSX" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="DiS-pr-DH0"/>
+                <constraint firstItem="R7Y-uy-zSX" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="wnu-yU-DEx"/>
+            </constraints>
+            <size key="customSize" width="245" height="126"/>
+            <connections>
+                <outlet property="imageView" destination="uri-2B-jDR" id="GkU-Of-pB0"/>
+                <outlet property="roundBgView" destination="R7Y-uy-zSX" id="odQ-1F-eYQ"/>
+                <outlet property="titleLabel" destination="0rq-pQ-EFQ" id="kf1-SD-1WT"/>
+            </connections>
+            <point key="canvasLocation" x="281.15942028985512" y="174.77678571428569"/>
+        </collectionViewCell>
+    </objects>
+    <resources>
+        <namedColor name="searchBg">
+            <color red="0.097000002861022949" green="0.10199999809265137" blue="0.5899999737739563" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+    </resources>
+</document>

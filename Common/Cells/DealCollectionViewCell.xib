@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="32700.99.1234" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22684"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="metropolis.medium.otf">
+            <string>Metropolis-Medium</string>
+        </array>
+        <array key="metropolis.semi-bold.otf">
+            <string>Metropolis-SemiBold</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <collectionViewCell opaque="NO" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" reuseIdentifier="DealCollectionViewCell" id="otf-gl-xaS" customClass="DealCollectionViewCell" customModule="Dilblitz" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="240" height="343"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                <rect key="frame" x="0.0" y="0.0" width="240" height="343"/>
+                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7Jh-61-hZK" customClass="RoundedViewWithShadow" customModule="Dilblitz" customModuleProvider="target">
+                        <rect key="frame" x="0.0" y="0.0" width="240" height="283"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aA1-8D-KGV" userLabel="ImageContainer">
+                                <rect key="frame" x="0.0" y="0.0" width="240" height="200"/>
+                                <subviews>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="kyU-Qt-mqc">
+                                        <rect key="frame" x="0.0" y="0.0" width="240" height="200"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    </imageView>
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="50% off" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dqU-ei-tFI" customClass="PaddingLabel" customModule="Dilblitz" customModuleProvider="target">
+                                        <rect key="frame" x="188.5" y="6" width="45.5" height="12"/>
+                                        <fontDescription key="fontDescription" name="Metropolis-SemiBold" family="Metropolis" pointSize="12"/>
+                                        <color key="textColor" name="mainBlue"/>
+                                        <nil key="highlightedColor"/>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="topInset">
+                                                <real key="value" value="5"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="bottomInset">
+                                                <real key="value" value="5"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="leftInset">
+                                                <real key="value" value="5"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="rightInset">
+                                                <real key="value" value="5"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                    </label>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4uT-gK-Rd7" userLabel="BookmarkButton">
+                                        <rect key="frame" x="210" y="156" width="30" height="44"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="30" id="lms-xY-ke0"/>
+                                            <constraint firstAttribute="width" secondItem="4uT-gK-Rd7" secondAttribute="height" multiplier="15:22" id="lzI-kC-rWW"/>
+                                        </constraints>
+                                        <state key="normal" image="bookmark"/>
+                                        <connections>
+                                            <action selector="bookmarkButtonPressed:" destination="otf-gl-xaS" eventType="touchUpInside" id="s77-xW-155"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstItem="kyU-Qt-mqc" firstAttribute="top" secondItem="aA1-8D-KGV" secondAttribute="top" id="FCZ-nF-luc"/>
+                                    <constraint firstAttribute="trailing" secondItem="4uT-gK-Rd7" secondAttribute="trailing" id="SF3-Gl-w8y"/>
+                                    <constraint firstAttribute="height" constant="200" id="TRr-Qm-Sy8"/>
+                                    <constraint firstAttribute="trailing" secondItem="dqU-ei-tFI" secondAttribute="trailing" constant="6" id="WPq-SY-xuv"/>
+                                    <constraint firstAttribute="bottom" secondItem="4uT-gK-Rd7" secondAttribute="bottom" id="f2A-6P-X4R"/>
+                                    <constraint firstItem="kyU-Qt-mqc" firstAttribute="leading" secondItem="aA1-8D-KGV" secondAttribute="leading" id="f9m-3j-RSB"/>
+                                    <constraint firstAttribute="bottom" secondItem="kyU-Qt-mqc" secondAttribute="bottom" id="hPn-5R-cwZ"/>
+                                    <constraint firstItem="dqU-ei-tFI" firstAttribute="top" secondItem="aA1-8D-KGV" secondAttribute="top" constant="6" id="iiZ-yr-uWC"/>
+                                    <constraint firstAttribute="trailing" secondItem="kyU-Qt-mqc" secondAttribute="trailing" id="wPb-l6-Yj7"/>
+                                </constraints>
+                            </view>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label Title" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yaO-nS-K4w">
+                                <rect key="frame" x="10" y="210" width="220" height="11"/>
+                                <fontDescription key="fontDescription" name="Metropolis-Medium" family="Metropolis" pointSize="11"/>
+                                <color key="textColor" name="mainBlue"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mVi-og-pdW" userLabel="RateView" customClass="RateView" customModule="Dilblitz" customModuleProvider="target">
+                                <rect key="frame" x="10" y="223" width="90" height="15"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="15" id="60J-RE-Ezd"/>
+                                    <constraint firstAttribute="width" constant="90" id="xOq-SB-GE2"/>
+                                </constraints>
+                            </view>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label Description" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="f5i-YS-aXd">
+                                <rect key="frame" x="10" y="244" width="220" height="11"/>
+                                <fontDescription key="fontDescription" name="Metropolis-Medium" family="Metropolis" pointSize="11"/>
+                                <color key="textColor" name="darkGrayText"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eho-bn-9jo" userLabel="MenuButton">
+                                <rect key="frame" x="200" y="243" width="40" height="40"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="40" id="ZJg-Mu-92z"/>
+                                    <constraint firstAttribute="width" secondItem="eho-bn-9jo" secondAttribute="height" multiplier="1:1" id="gX7-s8-mh3"/>
+                                </constraints>
+                                <inset key="imageEdgeInsets" minX="11" minY="18" maxX="11" maxY="17"/>
+                                <state key="normal" title="Button" image="menu"/>
+                                <connections>
+                                    <action selector="optionsButtonPressed:" destination="otf-gl-xaS" eventType="touchUpInside" id="lHq-hj-SFi"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="aA1-8D-KGV" firstAttribute="leading" secondItem="7Jh-61-hZK" secondAttribute="leading" id="3SS-TP-fXt"/>
+                            <constraint firstItem="yaO-nS-K4w" firstAttribute="leading" secondItem="7Jh-61-hZK" secondAttribute="leading" constant="10" id="E7U-ov-z6i"/>
+                            <constraint firstAttribute="trailing" secondItem="aA1-8D-KGV" secondAttribute="trailing" id="JGI-7A-Gfh"/>
+                            <constraint firstItem="f5i-YS-aXd" firstAttribute="centerX" secondItem="7Jh-61-hZK" secondAttribute="centerX" id="KR4-MU-Db2"/>
+                            <constraint firstItem="yaO-nS-K4w" firstAttribute="centerX" secondItem="7Jh-61-hZK" secondAttribute="centerX" id="Wd2-dT-alr"/>
+                            <constraint firstItem="yaO-nS-K4w" firstAttribute="top" secondItem="aA1-8D-KGV" secondAttribute="bottom" constant="10" id="caJ-1m-xem"/>
+                            <constraint firstItem="mVi-og-pdW" firstAttribute="leading" secondItem="7Jh-61-hZK" secondAttribute="leading" constant="10" id="gHQ-V0-4Gl"/>
+                            <constraint firstAttribute="bottom" secondItem="eho-bn-9jo" secondAttribute="bottom" id="i0F-7x-leB"/>
+                            <constraint firstItem="f5i-YS-aXd" firstAttribute="top" secondItem="yaO-nS-K4w" secondAttribute="bottom" constant="23" id="j0i-eD-2de"/>
+                            <constraint firstItem="aA1-8D-KGV" firstAttribute="top" secondItem="7Jh-61-hZK" secondAttribute="top" id="mt5-gk-tSp"/>
+                            <constraint firstAttribute="bottom" secondItem="f5i-YS-aXd" secondAttribute="bottom" constant="28" id="nEH-Pu-q0V"/>
+                            <constraint firstItem="f5i-YS-aXd" firstAttribute="leading" secondItem="7Jh-61-hZK" secondAttribute="leading" constant="10" id="rt5-Wj-STx"/>
+                            <constraint firstAttribute="trailing" secondItem="eho-bn-9jo" secondAttribute="trailing" id="vVY-DJ-AMX"/>
+                            <constraint firstItem="mVi-og-pdW" firstAttribute="top" secondItem="yaO-nS-K4w" secondAttribute="bottom" constant="2" id="wUw-sF-oWY"/>
+                        </constraints>
+                    </view>
+                </subviews>
+            </view>
+            <constraints>
+                <constraint firstItem="7Jh-61-hZK" firstAttribute="top" secondItem="otf-gl-xaS" secondAttribute="top" id="TqX-9d-z42"/>
+                <constraint firstAttribute="trailing" secondItem="7Jh-61-hZK" secondAttribute="trailing" id="abe-Vh-n0R"/>
+                <constraint firstItem="7Jh-61-hZK" firstAttribute="leading" secondItem="otf-gl-xaS" secondAttribute="leading" id="eja-wl-fbN"/>
+            </constraints>
+            <size key="customSize" width="240" height="343"/>
+            <connections>
+                <outlet property="bookmarkButton" destination="4uT-gK-Rd7" id="poW-JT-ayr"/>
+                <outlet property="contentViewRounded" destination="7Jh-61-hZK" id="zBg-xQ-AQu"/>
+                <outlet property="descriptionLabel" destination="f5i-YS-aXd" id="O24-ZK-G1A"/>
+                <outlet property="discountLabel" destination="dqU-ei-tFI" id="EB0-fD-V1j"/>
+                <outlet property="imageContainerHeight" destination="TRr-Qm-Sy8" id="AOT-zX-HgY"/>
+                <outlet property="imageView" destination="kyU-Qt-mqc" id="JAB-7M-7kr"/>
+                <outlet property="rateView" destination="mVi-og-pdW" id="bUo-lh-OhP"/>
+                <outlet property="titleLabel" destination="yaO-nS-K4w" id="0jx-Su-YLb"/>
+            </connections>
+            <point key="canvasLocation" x="140.57971014492756" y="150.33482142857142"/>
+        </collectionViewCell>
+    </objects>
+    <designables>
+        <designable name="dqU-ei-tFI">
+            <size key="intrinsicContentSize" width="45.5" height="12"/>
+        </designable>
+    </designables>
+    <resources>
+        <image name="bookmark" width="14.666666984558105" height="20"/>
+        <image name="menu" width="26.666666030883789" height="6.6666665077209473"/>
+        <namedColor name="darkGrayText">
+            <color red="0.32899999618530273" green="0.32899999618530273" blue="0.32899999618530273" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="mainBlue">
+            <color red="0.0" green="0.0040000001899898052" blue="0.54500001668930054" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+    </resources>
+</document>

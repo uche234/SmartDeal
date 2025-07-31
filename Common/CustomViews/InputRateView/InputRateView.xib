@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="InputRateView" customModule="Dilblitz" customModuleProvider="target">
+            <connections>
+                <outlet property="contentView" destination="iN0-l3-epB" id="Hoa-L8-kpv"/>
+                <outletCollection property="starButtons" destination="nun-VU-xEz" collectionClass="NSMutableArray" id="FoH-x7-FpU"/>
+                <outletCollection property="starButtons" destination="DkF-S8-Rqo" collectionClass="NSMutableArray" id="Sms-b2-gBa"/>
+                <outletCollection property="starButtons" destination="9iR-mc-NDR" collectionClass="NSMutableArray" id="9xv-kn-fba"/>
+                <outletCollection property="starButtons" destination="MMa-Kr-2ag" collectionClass="NSMutableArray" id="4xm-Fq-6dd"/>
+                <outletCollection property="starButtons" destination="VmS-iW-bfl" collectionClass="NSMutableArray" id="dwB-TK-r50"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="iN0-l3-epB" userLabel="ContentView">
+            <rect key="frame" x="0.0" y="0.0" width="414" height="111"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="U44-ZO-v7o">
+                    <rect key="frame" x="132" y="40.5" width="150" height="30"/>
+                    <subviews>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="X9l-nZ-Otm" userLabel="ItemView">
+                            <rect key="frame" x="0.0" y="0.0" width="30" height="30"/>
+                            <subviews>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nun-VU-xEz">
+                                    <rect key="frame" x="0.0" y="0.0" width="30" height="30"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="30" id="2P0-o3-d0M"/>
+                                        <constraint firstAttribute="width" secondItem="nun-VU-xEz" secondAttribute="height" multiplier="1:1" id="x4H-BC-Fms"/>
+                                    </constraints>
+                                    <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                    <state key="normal" image="star_gray"/>
+                                    <connections>
+                                        <action selector="starButtonPressed:" destination="-1" eventType="touchUpInside" id="dA6-jy-eMd"/>
+                                    </connections>
+                                </button>
+                            </subviews>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <constraints>
+                                <constraint firstItem="nun-VU-xEz" firstAttribute="leading" secondItem="X9l-nZ-Otm" secondAttribute="leading" id="G48-iZ-98W"/>
+                                <constraint firstAttribute="bottom" secondItem="nun-VU-xEz" secondAttribute="bottom" id="JC1-LI-VvJ"/>
+                                <constraint firstItem="nun-VU-xEz" firstAttribute="top" secondItem="X9l-nZ-Otm" secondAttribute="top" id="auq-wz-e2x"/>
+                                <constraint firstAttribute="trailing" secondItem="nun-VU-xEz" secondAttribute="trailing" id="pd0-2q-h1y"/>
+                            </constraints>
+                        </view>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LeL-fA-zP5" userLabel="ItemView">
+                            <rect key="frame" x="30" y="0.0" width="30" height="30"/>
+                            <subviews>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DkF-S8-Rqo">
+                                    <rect key="frame" x="0.0" y="0.0" width="30" height="30"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" secondItem="DkF-S8-Rqo" secondAttribute="height" multiplier="1:1" id="ccz-XA-870"/>
+                                    </constraints>
+                                    <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                    <state key="normal" image="star_gray"/>
+                                    <connections>
+                                        <action selector="starButtonPressed:" destination="-1" eventType="touchUpInside" id="coj-jo-AeN"/>
+                                    </connections>
+                                </button>
+                            </subviews>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <constraints>
+                                <constraint firstItem="DkF-S8-Rqo" firstAttribute="top" secondItem="LeL-fA-zP5" secondAttribute="top" id="UDS-Aj-SDo"/>
+                                <constraint firstAttribute="bottom" secondItem="DkF-S8-Rqo" secondAttribute="bottom" id="kCp-SZ-CU5"/>
+                                <constraint firstItem="DkF-S8-Rqo" firstAttribute="leading" secondItem="LeL-fA-zP5" secondAttribute="leading" id="qrG-uQ-VPC"/>
+                                <constraint firstAttribute="trailing" secondItem="DkF-S8-Rqo" secondAttribute="trailing" id="z3l-d9-0jh"/>
+                            </constraints>
+                        </view>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="YMa-WQ-0t3" userLabel="ItemView">
+                            <rect key="frame" x="60" y="0.0" width="30" height="30"/>
+                            <subviews>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9iR-mc-NDR">
+                                    <rect key="frame" x="0.0" y="0.0" width="30" height="30"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" secondItem="9iR-mc-NDR" secondAttribute="height" multiplier="1:1" id="EKP-Iv-LKp"/>
+                                    </constraints>
+                                    <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                    <state key="normal" image="star_gray"/>
+                                    <connections>
+                                        <action selector="starButtonPressed:" destination="-1" eventType="touchUpInside" id="3WZ-Uf-tlD"/>
+                                    </connections>
+                                </button>
+                            </subviews>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <constraints>
+                                <constraint firstAttribute="trailing" secondItem="9iR-mc-NDR" secondAttribute="trailing" id="Hrd-l6-cBt"/>
+                                <constraint firstAttribute="bottom" secondItem="9iR-mc-NDR" secondAttribute="bottom" id="Mzh-Qp-VrX"/>
+                                <constraint firstItem="9iR-mc-NDR" firstAttribute="leading" secondItem="YMa-WQ-0t3" secondAttribute="leading" id="ZNT-8A-v6y"/>
+                                <constraint firstItem="9iR-mc-NDR" firstAttribute="top" secondItem="YMa-WQ-0t3" secondAttribute="top" id="inL-zB-imx"/>
+                            </constraints>
+                        </view>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TaI-08-hRe" userLabel="ItemView">
+                            <rect key="frame" x="90" y="0.0" width="30" height="30"/>
+                            <subviews>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MMa-Kr-2ag">
+                                    <rect key="frame" x="0.0" y="0.0" width="30" height="30"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" secondItem="MMa-Kr-2ag" secondAttribute="height" multiplier="1:1" id="Sz6-B6-dTo"/>
+                                    </constraints>
+                                    <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                    <state key="normal" image="star_gray"/>
+                                    <connections>
+                                        <action selector="starButtonPressed:" destination="-1" eventType="touchUpInside" id="KK8-aK-Azc"/>
+                                    </connections>
+                                </button>
+                            </subviews>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <constraints>
+                                <constraint firstAttribute="bottom" secondItem="MMa-Kr-2ag" secondAttribute="bottom" id="2Mi-hT-1Y7"/>
+                                <constraint firstItem="MMa-Kr-2ag" firstAttribute="leading" secondItem="TaI-08-hRe" secondAttribute="leading" id="dRX-Xf-ovW"/>
+                                <constraint firstItem="MMa-Kr-2ag" firstAttribute="top" secondItem="TaI-08-hRe" secondAttribute="top" id="iAd-4f-nb2"/>
+                                <constraint firstAttribute="trailing" secondItem="MMa-Kr-2ag" secondAttribute="trailing" id="qyC-fh-CPg"/>
+                            </constraints>
+                        </view>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CN8-PV-mtk" userLabel="ItemView">
+                            <rect key="frame" x="120" y="0.0" width="30" height="30"/>
+                            <subviews>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VmS-iW-bfl">
+                                    <rect key="frame" x="0.0" y="0.0" width="30" height="30"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" secondItem="VmS-iW-bfl" secondAttribute="height" multiplier="1:1" id="ZeT-ml-Wxg"/>
+                                    </constraints>
+                                    <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                    <state key="normal" image="star_gray"/>
+                                    <connections>
+                                        <action selector="starButtonPressed:" destination="-1" eventType="touchUpInside" id="Lsz-fz-er9"/>
+                                    </connections>
+                                </button>
+                            </subviews>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <constraints>
+                                <constraint firstAttribute="trailing" secondItem="VmS-iW-bfl" secondAttribute="trailing" id="2X3-3B-ffm"/>
+                                <constraint firstAttribute="bottom" secondItem="VmS-iW-bfl" secondAttribute="bottom" id="KXo-uh-1pn"/>
+                                <constraint firstItem="VmS-iW-bfl" firstAttribute="leading" secondItem="CN8-PV-mtk" secondAttribute="leading" id="cNE-hC-XUt"/>
+                                <constraint firstItem="VmS-iW-bfl" firstAttribute="top" secondItem="CN8-PV-mtk" secondAttribute="top" id="wQh-hF-LtI"/>
+                            </constraints>
+                        </view>
+                    </subviews>
+                </stackView>
+            </subviews>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <constraints>
+                <constraint firstItem="U44-ZO-v7o" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="BlF-yQ-j6R"/>
+                <constraint firstItem="U44-ZO-v7o" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="oHI-qs-7l4"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <point key="canvasLocation" x="137.68115942028987" y="-110.15625"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="star_gray" width="11" height="11"/>
+    </resources>
+</document>

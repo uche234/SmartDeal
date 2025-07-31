@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="23727" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="omj-5e-cSl">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23721"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="metropolis.bold.otf">
+            <string>Metropolis-Bold</string>
+        </array>
+        <array key="metropolis.medium.otf">
+            <string>Metropolis-Medium</string>
+        </array>
+        <array key="metropolis.regular.otf">
+            <string>Metropolis-Regular</string>
+        </array>
+    </customFonts>
+    <scenes>
+        <!--Explore View Controller-->
+        <scene sceneID="WTJ-B1-hct">
+            <objects>
+                <viewController id="omj-5e-cSl" customClass="ExploreViewController" customModule="Dilblitz" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="mUJ-1s-x7a">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Explore" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Xui-hZ-Vew">
+                                <rect key="frame" x="16" y="104" width="87" height="23"/>
+                                <fontDescription key="fontDescription" name="Metropolis-Bold" family="Metropolis" pointSize="23"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Deals Nearby" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wQ8-5H-hab">
+                                <rect key="frame" x="16" y="133" width="91.5" height="14"/>
+                                <fontDescription key="fontDescription" name="Metropolis-Medium" family="Metropolis" pointSize="14"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="clip" translatesAutoresizingMaskIntoConstraints="NO" id="Gkj-I8-1cr" userLabel="LocationButton">
+                                <rect key="frame" x="294" y="122" width="104" height="36"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="36" id="OSu-zH-rcV"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="Metropolis-Regular" family="Metropolis" pointSize="12"/>
+                                <state key="normal" title="Unknown location"/>
+                                <connections>
+                                    <action selector="didTapLocationButton:" destination="omj-5e-cSl" eventType="touchUpInside" id="ECF-0H-wGL"/>
+                                </connections>
+                            </button>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="JKk-no-G4R" userLabel="SearchView" customClass="SearchBar" customModule="Dilblitz" customModuleProvider="target">
+                                <rect key="frame" x="16" y="110" width="382" height="36"/>
+                                <color key="backgroundColor" name="searchBg"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="36" id="pqy-Ga-OAS"/>
+                                </constraints>
+                            </view>
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="X2W-zI-bCz">
+                                <rect key="frame" x="0.0" y="165" width="414" height="663"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <collectionViewLayout key="collectionViewLayout" id="ucd-4u-1hC" customClass="CustomLayout" customModule="Dilblitz" customModuleProvider="target"/>
+                                <cells/>
+                            </collectionView>
+                            <view contentMode="scaleToFill" placeholderIntrinsicWidth="374" placeholderIntrinsicHeight="50" translatesAutoresizingMaskIntoConstraints="NO" id="uBJ-gB-X8B" customClass="NoDealsView" customModule="Dilblitz" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="165" width="414" height="50"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </view>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="4N2-zI-aMT"/>
+                        <color key="backgroundColor" name="mainBlue"/>
+                        <constraints>
+                            <constraint firstItem="Xui-hZ-Vew" firstAttribute="top" secondItem="4N2-zI-aMT" secondAttribute="top" constant="8" id="4w6-1F-qpD"/>
+                            <constraint firstItem="uBJ-gB-X8B" firstAttribute="centerX" secondItem="mUJ-1s-x7a" secondAttribute="centerX" id="ApH-Hx-xXl"/>
+                            <constraint firstItem="JKk-no-G4R" firstAttribute="centerX" secondItem="mUJ-1s-x7a" secondAttribute="centerX" id="DjL-oE-Qlq"/>
+                            <constraint firstItem="wQ8-5H-hab" firstAttribute="top" secondItem="Xui-hZ-Vew" secondAttribute="bottom" constant="6" id="FKh-KZ-qn7"/>
+                            <constraint firstItem="Gkj-I8-1cr" firstAttribute="centerY" secondItem="wQ8-5H-hab" secondAttribute="centerY" id="Kbv-91-nXm"/>
+                            <constraint firstAttribute="trailing" secondItem="X2W-zI-bCz" secondAttribute="trailing" id="MNT-e9-cC0"/>
+                            <constraint firstItem="X2W-zI-bCz" firstAttribute="leading" secondItem="mUJ-1s-x7a" secondAttribute="leading" id="Oyc-aC-NkJ"/>
+                            <constraint firstItem="X2W-zI-bCz" firstAttribute="top" secondItem="JKk-no-G4R" secondAttribute="bottom" constant="15" id="QiE-bn-0qO"/>
+                            <constraint firstItem="4N2-zI-aMT" firstAttribute="bottom" secondItem="X2W-zI-bCz" secondAttribute="bottom" id="Wmi-i2-MwS"/>
+                            <constraint firstItem="wQ8-5H-hab" firstAttribute="leading" secondItem="4N2-zI-aMT" secondAttribute="leading" constant="16" id="Z3x-xc-wX7"/>
+                            <constraint firstItem="JKk-no-G4R" firstAttribute="leading" secondItem="mUJ-1s-x7a" secondAttribute="leading" constant="16" id="ZAy-Vg-N0s"/>
+                            <constraint firstItem="Xui-hZ-Vew" firstAttribute="leading" secondItem="4N2-zI-aMT" secondAttribute="leading" constant="16" id="Zsw-cc-NAp"/>
+                            <constraint firstItem="X2W-zI-bCz" firstAttribute="top" secondItem="4N2-zI-aMT" secondAttribute="top" constant="69" id="a7Q-vF-T1L"/>
+                            <constraint firstItem="uBJ-gB-X8B" firstAttribute="top" secondItem="X2W-zI-bCz" secondAttribute="top" id="bdu-PJ-9iW"/>
+                            <constraint firstAttribute="trailing" secondItem="Gkj-I8-1cr" secondAttribute="trailing" constant="16" id="eLm-aW-QH2"/>
+                            <constraint firstItem="Gkj-I8-1cr" firstAttribute="width" relation="lessThanOrEqual" secondItem="mUJ-1s-x7a" secondAttribute="width" multiplier="0.5" id="leC-C7-A9I"/>
+                            <constraint firstItem="uBJ-gB-X8B" firstAttribute="leading" secondItem="mUJ-1s-x7a" secondAttribute="leading" id="uZX-dM-DgF"/>
+                        </constraints>
+                        <variation key="default">
+                            <mask key="subviews">
+                                <exclude reference="JKk-no-G4R"/>
+                            </mask>
+                        </variation>
+                    </view>
+                    <connections>
+                        <outlet property="collectionView" destination="X2W-zI-bCz" id="LtP-8K-nhf"/>
+                        <outlet property="locationButton" destination="Gkj-I8-1cr" id="QWP-FP-ogg"/>
+                        <outlet property="noDealsView" destination="uBJ-gB-X8B" id="C2x-y5-WZQ"/>
+                        <outlet property="searchBar" destination="JKk-no-G4R" id="qWd-Go-9Uk"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="h1V-y2-EJb" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="234.78260869565219" y="186.83035714285714"/>
+        </scene>
+    </scenes>
+    <resources>
+        <namedColor name="mainBlue">
+            <color red="0.0" green="0.0039215686274509803" blue="0.54117647058823526" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="searchBg">
+            <color red="0.097000002861022949" green="0.10199999809265137" blue="0.5899999737739563" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+    </resources>
+</document>

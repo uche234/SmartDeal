@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19455" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19454"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="metropolis.medium.otf">
+            <string>Metropolis-Medium</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="SearchBar" customModule="Dilblitz" customModuleProvider="target">
+            <connections>
+                <outlet property="contentView" destination="iN0-l3-epB" id="Sio-vU-Swd"/>
+                <outlet property="filtersButton" destination="mQt-pu-bRE" id="Qsa-Sr-UnE"/>
+                <outlet property="searchPlaceholderLabel" destination="m3h-Yp-WXS" id="X9i-9y-UHz"/>
+                <outlet property="textField" destination="hVZ-WX-i2t" id="How-ZS-vY6"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="iN0-l3-epB" userLabel="ContentView">
+            <rect key="frame" x="0.0" y="0.0" width="514" height="36"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="saY-eC-I4Y" userLabel="SearchView">
+                    <rect key="frame" x="0.0" y="0.0" width="514" height="36"/>
+                    <subviews>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="W69-FC-ppj" userLabel="SearchButton">
+                            <rect key="frame" x="2" y="0.0" width="44" height="36"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="36" id="9dk-uD-UX8"/>
+                                <constraint firstAttribute="width" constant="44" id="cbV-ib-T3F"/>
+                            </constraints>
+                            <inset key="imageEdgeInsets" minX="14" minY="10" maxX="14" maxY="10"/>
+                            <state key="normal" image="search_white"/>
+                        </button>
+                        <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="hVZ-WX-i2t">
+                            <rect key="frame" x="46" y="0.0" width="422" height="36"/>
+                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <fontDescription key="fontDescription" name="Metropolis-Medium" family="Metropolis" pointSize="14"/>
+                            <textInputTraits key="textInputTraits"/>
+                        </textField>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="What are you looking for?" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="m3h-Yp-WXS">
+                            <rect key="frame" x="46" y="12" width="422" height="12"/>
+                            <fontDescription key="fontDescription" name="Metropolis-Medium" family="Metropolis" pointSize="12"/>
+                            <color key="textColor" name="lightBlueText"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mQt-pu-bRE" userLabel="FilterButton">
+                            <rect key="frame" x="468" y="0.0" width="44" height="36"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="44" id="H9H-AB-qd1"/>
+                                <constraint firstAttribute="height" constant="36" id="g5y-me-DNT"/>
+                            </constraints>
+                            <inset key="imageEdgeInsets" minX="12" minY="10" maxX="12" maxY="10"/>
+                            <state key="normal" image="filter_white"/>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" name="searchBg"/>
+                    <constraints>
+                        <constraint firstItem="W69-FC-ppj" firstAttribute="centerY" secondItem="saY-eC-I4Y" secondAttribute="centerY" id="2mJ-YS-IH8"/>
+                        <constraint firstAttribute="height" constant="36" id="6sH-qS-0c8"/>
+                        <constraint firstItem="mQt-pu-bRE" firstAttribute="leading" secondItem="m3h-Yp-WXS" secondAttribute="trailing" id="AJ0-dp-U3h"/>
+                        <constraint firstItem="mQt-pu-bRE" firstAttribute="centerY" secondItem="saY-eC-I4Y" secondAttribute="centerY" id="Dap-Rp-n8i"/>
+                        <constraint firstItem="hVZ-WX-i2t" firstAttribute="top" secondItem="saY-eC-I4Y" secondAttribute="top" id="E2g-v4-OcW"/>
+                        <constraint firstAttribute="trailing" secondItem="mQt-pu-bRE" secondAttribute="trailing" constant="2" id="JCL-si-T6p"/>
+                        <constraint firstItem="mQt-pu-bRE" firstAttribute="leading" secondItem="hVZ-WX-i2t" secondAttribute="trailing" id="WKn-Pv-5OF"/>
+                        <constraint firstAttribute="bottom" secondItem="hVZ-WX-i2t" secondAttribute="bottom" id="aOd-wt-n6U"/>
+                        <constraint firstItem="m3h-Yp-WXS" firstAttribute="centerY" secondItem="saY-eC-I4Y" secondAttribute="centerY" id="eG3-tR-7LT"/>
+                        <constraint firstItem="W69-FC-ppj" firstAttribute="leading" secondItem="saY-eC-I4Y" secondAttribute="leading" constant="2" id="od5-8E-bRe"/>
+                        <constraint firstItem="hVZ-WX-i2t" firstAttribute="leading" secondItem="W69-FC-ppj" secondAttribute="trailing" id="p2U-nc-Sz4"/>
+                        <constraint firstItem="m3h-Yp-WXS" firstAttribute="leading" secondItem="W69-FC-ppj" secondAttribute="trailing" id="zrK-IA-wPm"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="saY-eC-I4Y" secondAttribute="trailing" id="GrE-1M-D8D"/>
+                <constraint firstItem="saY-eC-I4Y" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="WUB-MX-yQf"/>
+                <constraint firstAttribute="bottom" secondItem="saY-eC-I4Y" secondAttribute="bottom" id="j9F-Ka-iFp"/>
+                <constraint firstItem="saY-eC-I4Y" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="x47-cb-Jhg"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <point key="canvasLocation" x="201.44927536231884" y="-213.61607142857142"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="filter_white" width="57" height="45"/>
+        <image name="search_white" width="45" height="45"/>
+        <namedColor name="lightBlueText">
+            <color red="0.35499998927116394" green="0.35499998927116394" blue="0.65100002288818359" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="searchBg">
+            <color red="0.097000002861022949" green="0.10199999809265137" blue="0.5899999737739563" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+    </resources>
+</document>

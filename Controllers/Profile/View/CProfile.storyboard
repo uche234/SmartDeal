@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="23504" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="MhL-xn-3po">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23506"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="metropolis.medium.otf">
+            <string>Metropolis-Medium</string>
+        </array>
+        <array key="metropolis.regular.otf">
+            <string>Metropolis-Regular</string>
+        </array>
+        <array key="metropolis.semi-bold.otf">
+            <string>Metropolis-SemiBold</string>
+        </array>
+    </customFonts>
+    <scenes>
+        <!--Profile View Controller-->
+        <scene sceneID="enw-Ce-JXE">
+            <objects>
+                <viewController id="MhL-xn-3po" customClass="CProfileViewController" customModule="Dilblitz" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="AsH-ff-fNk">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="920"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aOJ-IG-942" userLabel="topBar">
+                                <rect key="frame" x="0.0" y="48" width="375" height="154"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Profile" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="a4f-UH-w9Q">
+                                        <rect key="frame" x="16" y="0.0" width="69.5" height="22"/>
+                                        <fontDescription key="fontDescription" name="Metropolis-SemiBold" family="Metropolis" pointSize="22"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2D9-z2-q4e" userLabel="ProfileContainer">
+                                        <rect key="frame" x="16" y="34" width="343" height="87"/>
+                                        <subviews>
+                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="GiE-Ms-kAh">
+                                                <rect key="frame" x="15" y="13.5" width="60" height="60"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="60" id="Dfu-0E-0Bn"/>
+                                                    <constraint firstAttribute="width" secondItem="GiE-Ms-kAh" secondAttribute="height" multiplier="1:1" id="cH4-sl-irV"/>
+                                                </constraints>
+                                            </imageView>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Jessica Smith" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jrA-2T-kH5">
+                                                <rect key="frame" x="89" y="26" width="199" height="16"/>
+                                                <fontDescription key="fontDescription" name="Metropolis-SemiBold" family="Metropolis" pointSize="16"/>
+                                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="12 Deals Purchased" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NRW-OE-KSY">
+                                                <rect key="frame" x="89" y="55" width="234" height="14"/>
+                                                <fontDescription key="fontDescription" name="Metropolis-Medium" family="Metropolis" pointSize="14"/>
+                                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bxK-aq-azj" userLabel="EditButton">
+                                                <rect key="frame" x="298" y="5" width="40" height="40"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" secondItem="bxK-aq-azj" secondAttribute="height" multiplier="1:1" id="C5W-XO-Ftm"/>
+                                                    <constraint firstAttribute="height" constant="40" id="Xj5-Gy-sfD"/>
+                                                </constraints>
+                                                <state key="normal" image="edit round filled"/>
+                                                <connections>
+                                                    <action selector="editButtonPressed:" destination="MhL-xn-3po" eventType="touchUpInside" id="tfZ-DH-AJW"/>
+                                                </connections>
+                                            </button>
+                                        </subviews>
+                                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="0.10137521400000001" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                                        <constraints>
+                                            <constraint firstItem="jrA-2T-kH5" firstAttribute="leading" secondItem="GiE-Ms-kAh" secondAttribute="trailing" constant="14" id="3Z1-A3-l9l"/>
+                                            <constraint firstItem="GiE-Ms-kAh" firstAttribute="centerY" secondItem="2D9-z2-q4e" secondAttribute="centerY" id="Hmm-bF-7Yf"/>
+                                            <constraint firstItem="GiE-Ms-kAh" firstAttribute="leading" secondItem="2D9-z2-q4e" secondAttribute="leading" constant="15" id="Jfy-rh-9Pm"/>
+                                            <constraint firstAttribute="trailing" secondItem="bxK-aq-azj" secondAttribute="trailing" constant="5" id="U5J-l8-YPb"/>
+                                            <constraint firstAttribute="trailing" secondItem="NRW-OE-KSY" secondAttribute="trailing" constant="20" id="deT-Hg-1it"/>
+                                            <constraint firstItem="NRW-OE-KSY" firstAttribute="top" secondItem="jrA-2T-kH5" secondAttribute="bottom" constant="13" id="e2q-7d-Nc6"/>
+                                            <constraint firstAttribute="height" constant="87" id="hCA-uR-M9O"/>
+                                            <constraint firstItem="bxK-aq-azj" firstAttribute="leading" secondItem="jrA-2T-kH5" secondAttribute="trailing" constant="10" id="hCK-ji-nfh"/>
+                                            <constraint firstItem="jrA-2T-kH5" firstAttribute="top" secondItem="2D9-z2-q4e" secondAttribute="top" constant="26" id="huY-1g-huk"/>
+                                            <constraint firstItem="bxK-aq-azj" firstAttribute="top" secondItem="2D9-z2-q4e" secondAttribute="top" constant="5" id="pcB-4a-aiL"/>
+                                            <constraint firstItem="NRW-OE-KSY" firstAttribute="leading" secondItem="GiE-Ms-kAh" secondAttribute="trailing" constant="14" id="z0P-hN-2Nf"/>
+                                        </constraints>
+                                    </view>
+                                    <stackView opaque="NO" contentMode="scaleToFill" spacing="31" translatesAutoresizingMaskIntoConstraints="NO" id="A74-E4-hFM">
+                                        <rect key="frame" x="18" y="121" width="227" height="33"/>
+                                        <subviews>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Xrh-1u-HLu">
+                                                <rect key="frame" x="0.0" y="0.0" width="71" height="33"/>
+                                                <fontDescription key="fontDescription" name="Metropolis-Regular" family="Metropolis" pointSize="12"/>
+                                                <state key="normal" title="Saved Deals">
+                                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                </state>
+                                                <connections>
+                                                    <action selector="savedDealsButtonPressed:" destination="MhL-xn-3po" eventType="touchUpInside" id="VRh-UU-E5e"/>
+                                                </connections>
+                                            </button>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8qF-N2-u3x">
+                                                <rect key="frame" x="102" y="0.0" width="62" height="33"/>
+                                                <fontDescription key="fontDescription" name="Metropolis-Regular" family="Metropolis" pointSize="12"/>
+                                                <state key="normal" title="Watch List">
+                                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                </state>
+                                                <connections>
+                                                    <action selector="watchListButtonPressed:" destination="MhL-xn-3po" eventType="touchUpInside" id="1Qu-qk-BMQ"/>
+                                                </connections>
+                                            </button>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="I37-iC-TrE">
+                                                <rect key="frame" x="195" y="0.0" width="32" height="33"/>
+                                                <fontDescription key="fontDescription" name="Metropolis-Regular" family="Metropolis" pointSize="12"/>
+                                                <state key="normal" title="Inbox">
+                                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                </state>
+                                                <connections>
+                                                    <action selector="inboxButtonPressed:" destination="MhL-xn-3po" eventType="touchUpInside" id="bw2-uj-wqg"/>
+                                                </connections>
+                                            </button>
+                                        </subviews>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="33" id="bHV-F0-YKz"/>
+                                        </constraints>
+                                    </stackView>
+                                </subviews>
+                                <color key="backgroundColor" name="mainBlue"/>
+                                <constraints>
+                                    <constraint firstAttribute="bottom" secondItem="A74-E4-hFM" secondAttribute="bottom" id="BgK-Jh-faO"/>
+                                    <constraint firstItem="a4f-UH-w9Q" firstAttribute="leading" secondItem="aOJ-IG-942" secondAttribute="leading" constant="16" id="FjF-B2-84T"/>
+                                    <constraint firstItem="A74-E4-hFM" firstAttribute="leading" secondItem="aOJ-IG-942" secondAttribute="leading" constant="18" id="IuS-bs-59m"/>
+                                    <constraint firstItem="2D9-z2-q4e" firstAttribute="top" secondItem="a4f-UH-w9Q" secondAttribute="bottom" constant="12" id="MzA-BR-a4H"/>
+                                    <constraint firstItem="2D9-z2-q4e" firstAttribute="leading" secondItem="aOJ-IG-942" secondAttribute="leading" constant="16" id="Uqw-5B-9vM"/>
+                                    <constraint firstItem="a4f-UH-w9Q" firstAttribute="top" secondItem="aOJ-IG-942" secondAttribute="top" id="cDS-Xd-zFz"/>
+                                    <constraint firstItem="2D9-z2-q4e" firstAttribute="centerX" secondItem="aOJ-IG-942" secondAttribute="centerX" id="l2p-l2-t76"/>
+                                    <constraint firstItem="A74-E4-hFM" firstAttribute="top" secondItem="2D9-z2-q4e" secondAttribute="bottom" id="woo-ey-d5g"/>
+                                </constraints>
+                            </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cyo-lk-aHt">
+                                <rect key="frame" x="0.0" y="202" width="375" height="80"/>
+                                <subviews>
+                                    <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1Yi-bN-38E">
+                                        <rect key="frame" x="67.5" y="16" width="240" height="48"/>
+                                        <color key="backgroundColor" name="mainBlue"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="48" id="Wm8-9w-M99"/>
+                                            <constraint firstAttribute="width" constant="240" id="axp-bc-PwM"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" name="Metropolis-Medium" family="Metropolis" pointSize="16"/>
+                                        <state key="normal" title="Login">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="didTapLoginButton:" destination="MhL-xn-3po" eventType="touchUpInside" id="Ugp-no-JFj"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstItem="1Yi-bN-38E" firstAttribute="top" secondItem="cyo-lk-aHt" secondAttribute="top" constant="16" id="gth-Zb-5Zy"/>
+                                    <constraint firstItem="1Yi-bN-38E" firstAttribute="centerX" secondItem="cyo-lk-aHt" secondAttribute="centerX" id="l4M-ww-xPO"/>
+                                    <constraint firstAttribute="bottom" secondItem="1Yi-bN-38E" secondAttribute="bottom" constant="16" id="pat-lY-eUf"/>
+                                </constraints>
+                            </view>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" contentInsetAdjustmentBehavior="never" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" contentViewInsetsToSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7lO-2a-G2v">
+                                <rect key="frame" x="0.0" y="282" width="375" height="638"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </tableView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="Nxm-bO-cbs"/>
+                        <color key="backgroundColor" name="mainBlue"/>
+                        <constraints>
+                            <constraint firstItem="Nxm-bO-cbs" firstAttribute="trailing" secondItem="cyo-lk-aHt" secondAttribute="trailing" id="9jX-p4-Dcx"/>
+                            <constraint firstItem="aOJ-IG-942" firstAttribute="leading" secondItem="AsH-ff-fNk" secondAttribute="leading" id="9qH-fA-b8Q"/>
+                            <constraint firstItem="7lO-2a-G2v" firstAttribute="top" secondItem="aOJ-IG-942" secondAttribute="bottom" constant="80" id="Cuw-vz-fSU"/>
+                            <constraint firstItem="aOJ-IG-942" firstAttribute="top" secondItem="Nxm-bO-cbs" secondAttribute="top" id="Db7-Ir-1YL"/>
+                            <constraint firstItem="7lO-2a-G2v" firstAttribute="leading" secondItem="AsH-ff-fNk" secondAttribute="leading" id="GhD-6i-Mb5"/>
+                            <constraint firstAttribute="bottom" secondItem="7lO-2a-G2v" secondAttribute="bottom" id="LXp-WP-3Fm"/>
+                            <constraint firstAttribute="trailing" secondItem="aOJ-IG-942" secondAttribute="trailing" id="ShG-2X-dRo"/>
+                            <constraint firstItem="cyo-lk-aHt" firstAttribute="leading" secondItem="Nxm-bO-cbs" secondAttribute="leading" id="X6s-7O-hvJ"/>
+                            <constraint firstItem="cyo-lk-aHt" firstAttribute="top" secondItem="aOJ-IG-942" secondAttribute="bottom" id="iSJ-LX-TP0"/>
+                            <constraint firstAttribute="trailing" secondItem="7lO-2a-G2v" secondAttribute="trailing" id="iqf-wg-Mha"/>
+                        </constraints>
+                    </view>
+                    <size key="freeformSize" width="375" height="920"/>
+                    <connections>
+                        <outlet property="avatarImageView" destination="GiE-Ms-kAh" id="3x3-jg-dEF"/>
+                        <outlet property="displayNameLabel" destination="jrA-2T-kH5" id="EqS-EH-z5f"/>
+                        <outlet property="inboxListButton" destination="I37-iC-TrE" id="cpg-ck-4t2"/>
+                        <outlet property="loginButton" destination="1Yi-bN-38E" id="2DF-o1-dvc"/>
+                        <outlet property="loginViewContainer" destination="cyo-lk-aHt" id="Fj9-x0-D95"/>
+                        <outlet property="profileContainer" destination="2D9-z2-q4e" id="gMO-5z-OI8"/>
+                        <outlet property="purchaseCountLabel" destination="NRW-OE-KSY" id="TcL-eu-pW6"/>
+                        <outlet property="savedDealsButton" destination="Xrh-1u-HLu" id="sKK-gc-xfu"/>
+                        <outlet property="tableView" destination="7lO-2a-G2v" id="Zlu-bO-mFk"/>
+                        <outlet property="tableViewTop" destination="Cuw-vz-fSU" id="tdq-C1-6qv"/>
+                        <outlet property="watchListButton" destination="8qF-N2-u3x" id="HZV-10-hUf"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="JPi-ss-TR5" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="234.05797101449278" y="186.16071428571428"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="edit round filled" width="23.333333969116211" height="23.333333969116211"/>
+        <namedColor name="mainBlue">
+            <color red="0.0" green="0.0040000001899898052" blue="0.54500001668930054" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+    </resources>
+</document>

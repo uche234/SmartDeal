@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21505"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="metropolis.regular.otf">
+            <string>Metropolis-Regular</string>
+        </array>
+        <array key="metropolis.semi-bold.otf">
+            <string>Metropolis-SemiBold</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="none" indentationWidth="10" rowHeight="164" id="1IB-d1-yXP" customClass="CProfileDealCell" customModule="Dilblitz" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="414" height="164"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="1IB-d1-yXP" id="qvd-t8-Z4L">
+                <rect key="frame" x="0.0" y="0.0" width="414" height="164"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Avn-YY-d8q" customClass="RoundedViewWithShadow" customModule="Dilblitz" customModuleProvider="target">
+                        <rect key="frame" x="16" y="40" width="382" height="84"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="yMW-Vv-YCX">
+                                <rect key="frame" x="8" y="8" width="68" height="68"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="yMW-Vv-YCX" secondAttribute="height" multiplier="1:1" id="TV0-DO-wQu"/>
+                                </constraints>
+                            </imageView>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="Dwd-Gg-3hj" userLabel="VStack View">
+                                <rect key="frame" x="85" y="13" width="282" height="58"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2Ot-SO-ZyO">
+                                        <rect key="frame" x="0.0" y="0.0" width="71" height="14"/>
+                                        <fontDescription key="fontDescription" name="Metropolis-SemiBold" family="Metropolis" pointSize="14"/>
+                                        <color key="textColor" name="mainBlue"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label Description" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NOA-fU-OXi">
+                                        <rect key="frame" x="0.0" y="24" width="100.5" height="12"/>
+                                        <fontDescription key="fontDescription" name="Metropolis-Regular" family="Metropolis" pointSize="12"/>
+                                        <color key="textColor" name="darkGrayText"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <stackView opaque="NO" contentMode="scaleToFill" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="ZOk-ot-J69" userLabel="HStack View">
+                                        <rect key="frame" x="0.0" y="46" width="97.5" height="12"/>
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="infoOne" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ut0-Sw-uxr">
+                                                <rect key="frame" x="0.0" y="0.0" width="46" height="12"/>
+                                                <fontDescription key="fontDescription" name="Metropolis-Regular" family="Metropolis" pointSize="12"/>
+                                                <color key="textColor" name="darkGrayText3"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="749" text="infoTwo" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eDr-77-eK9">
+                                                <rect key="frame" x="50" y="0.0" width="47.5" height="12"/>
+                                                <fontDescription key="fontDescription" name="Metropolis-SemiBold" family="Metropolis" pointSize="12"/>
+                                                <color key="textColor" name="darkGrayText3"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                        </subviews>
+                                    </stackView>
+                                </subviews>
+                            </stackView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ybg-A4-gbh">
+                                <rect key="frame" x="342" y="44" width="40" height="40"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="40" id="FDy-7j-dPx"/>
+                                    <constraint firstAttribute="width" secondItem="Ybg-A4-gbh" secondAttribute="height" multiplier="1:1" id="aZL-jM-Jsp"/>
+                                </constraints>
+                                <inset key="imageEdgeInsets" minX="10" minY="17" maxX="10" maxY="18"/>
+                                <state key="normal" image="menu"/>
+                                <connections>
+                                    <action selector="optionsButtonPressed:" destination="1IB-d1-yXP" eventType="touchUpInside" id="eL7-c0-vZS"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="yMW-Vv-YCX" firstAttribute="top" secondItem="Avn-YY-d8q" secondAttribute="top" constant="8" id="4QG-lq-5qK"/>
+                            <constraint firstAttribute="bottom" secondItem="Ybg-A4-gbh" secondAttribute="bottom" id="9Eh-Qg-R75"/>
+                            <constraint firstAttribute="bottom" secondItem="yMW-Vv-YCX" secondAttribute="bottom" constant="8" id="EPm-oV-ss8"/>
+                            <constraint firstAttribute="height" constant="84" id="FJU-Kh-frK"/>
+                            <constraint firstItem="Dwd-Gg-3hj" firstAttribute="centerY" secondItem="Avn-YY-d8q" secondAttribute="centerY" id="OsI-0V-Ep6"/>
+                            <constraint firstItem="Dwd-Gg-3hj" firstAttribute="leading" secondItem="yMW-Vv-YCX" secondAttribute="trailing" constant="9" id="SzE-4c-cb5"/>
+                            <constraint firstAttribute="trailing" secondItem="Dwd-Gg-3hj" secondAttribute="trailing" constant="15" id="ZIy-BX-2eE"/>
+                            <constraint firstAttribute="trailing" secondItem="Ybg-A4-gbh" secondAttribute="trailing" id="ae1-Tr-fHJ"/>
+                            <constraint firstItem="yMW-Vv-YCX" firstAttribute="leading" secondItem="Avn-YY-d8q" secondAttribute="leading" constant="8" id="zgY-il-VSC"/>
+                        </constraints>
+                    </view>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="Avn-YY-d8q" firstAttribute="leading" secondItem="qvd-t8-Z4L" secondAttribute="leading" constant="16" id="1NX-fg-UuQ"/>
+                    <constraint firstItem="Avn-YY-d8q" firstAttribute="centerX" secondItem="qvd-t8-Z4L" secondAttribute="centerX" id="3nm-LY-i89"/>
+                    <constraint firstItem="Avn-YY-d8q" firstAttribute="centerY" secondItem="qvd-t8-Z4L" secondAttribute="centerY" id="Pp7-FL-hK3"/>
+                    <constraint firstItem="Avn-YY-d8q" firstAttribute="top" secondItem="qvd-t8-Z4L" secondAttribute="top" priority="250" constant="8" id="vog-DD-2BN"/>
+                </constraints>
+            </tableViewCellContentView>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <connections>
+                <outlet property="aboutLabel" destination="NOA-fU-OXi" id="xkC-1y-WIV"/>
+                <outlet property="bgView" destination="Avn-YY-d8q" id="ec9-PL-Dz2"/>
+                <outlet property="coverImageView" destination="yMW-Vv-YCX" id="VUr-Qb-a7e"/>
+                <outlet property="info1Label" destination="ut0-Sw-uxr" id="AVs-x9-q3m"/>
+                <outlet property="info2Label" destination="eDr-77-eK9" id="1wl-VK-iWt"/>
+                <outlet property="promotionLabel" destination="2Ot-SO-ZyO" id="1SI-kz-BUJ"/>
+            </connections>
+            <point key="canvasLocation" x="131.8840579710145" y="167.41071428571428"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="menu" width="26.666666030883789" height="6.6666665077209473"/>
+        <namedColor name="darkGrayText">
+            <color red="0.32899999618530273" green="0.32899999618530273" blue="0.32899999618530273" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="darkGrayText3">
+            <color red="0.15000000596046448" green="0.15000000596046448" blue="0.15000000596046448" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="mainBlue">
+            <color red="0.0" green="0.0040000001899898052" blue="0.54500001668930054" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+    </resources>
+</document>

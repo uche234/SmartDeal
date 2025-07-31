@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="23504" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="hBk-HZ-jjJ">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23506"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="metropolis.medium.otf">
+            <string>Metropolis-Medium</string>
+        </array>
+        <array key="metropolis.semi-bold.otf">
+            <string>Metropolis-SemiBold</string>
+        </array>
+    </customFonts>
+    <scenes>
+        <!--Check Email View Controller-->
+        <scene sceneID="kTI-JQ-pXB">
+            <objects>
+                <viewController id="hBk-HZ-jjJ" customClass="CheckEmailViewController" customModule="Dilblitz" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="mOf-pu-u9c">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="840"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lzz-CA-qlT" userLabel="TopBarView">
+                                <rect key="frame" x="0.0" y="59" width="375" height="44"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="clip" translatesAutoresizingMaskIntoConstraints="NO" id="rnN-Vi-I4R" userLabel="BackButton">
+                                        <rect key="frame" x="12" y="0.0" width="44" height="44"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="44" id="0zi-9w-JoX"/>
+                                            <constraint firstAttribute="height" constant="44" id="qom-Nc-ZEt"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" name="Metropolis-SemiBold" family="Metropolis" pointSize="22"/>
+                                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <inset key="contentEdgeInsets" minX="10" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                        <inset key="imageEdgeInsets" minX="-10" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                        <state key="normal" image="back"/>
+                                        <connections>
+                                            <action selector="backButtonPressed:" destination="hBk-HZ-jjJ" eventType="touchUpInside" id="12A-78-aGF"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="WSe-w2-9Nh"/>
+                                    <constraint firstItem="rnN-Vi-I4R" firstAttribute="top" secondItem="lzz-CA-qlT" secondAttribute="top" id="rVL-u0-ZZj"/>
+                                    <constraint firstItem="rnN-Vi-I4R" firstAttribute="leading" secondItem="lzz-CA-qlT" secondAttribute="leading" constant="12" id="zDw-JE-0BM"/>
+                                </constraints>
+                            </view>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Check your email" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mC6-Ll-oa8">
+                                <rect key="frame" x="30" y="123.00000000000001" width="315" height="21.666666666666671"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Use the link or core sent to" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Cxx-tZ-ohJ">
+                                <rect key="frame" x="30" y="159.66666666666666" width="315" height="19.333333333333343"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                <color key="textColor" name="grayText"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1wn-l4-ScU">
+                                <rect key="frame" x="77.666666666666686" y="732" width="220" height="28"/>
+                                <color key="backgroundColor" name="mainBlue"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="220" id="sIv-OP-7Zo"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="Metropolis-Medium" family="Metropolis" pointSize="16"/>
+                                <state key="normal" title="Continue">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
+                                <connections>
+                                    <action selector="continueButtonPressed:" destination="hBk-HZ-jjJ" eventType="touchUpInside" id="k1O-EF-sVq"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="6Sf-LT-1vO"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="mC6-Ll-oa8" firstAttribute="leading" secondItem="mOf-pu-u9c" secondAttribute="leading" constant="30" id="4us-1m-YOl"/>
+                            <constraint firstItem="1wn-l4-ScU" firstAttribute="centerX" secondItem="mOf-pu-u9c" secondAttribute="centerX" id="6Nn-cL-XmF"/>
+                            <constraint firstItem="mC6-Ll-oa8" firstAttribute="centerX" secondItem="mOf-pu-u9c" secondAttribute="centerX" id="76d-7R-yh7"/>
+                            <constraint firstItem="lzz-CA-qlT" firstAttribute="trailing" secondItem="6Sf-LT-1vO" secondAttribute="trailing" id="B36-f2-alL"/>
+                            <constraint firstItem="Cxx-tZ-ohJ" firstAttribute="top" secondItem="mC6-Ll-oa8" secondAttribute="bottom" constant="15" id="EH0-xf-ISs"/>
+                            <constraint firstItem="mC6-Ll-oa8" firstAttribute="top" secondItem="lzz-CA-qlT" secondAttribute="bottom" constant="20" id="ROn-wM-UpW"/>
+                            <constraint firstAttribute="bottom" secondItem="1wn-l4-ScU" secondAttribute="bottom" constant="80" id="g51-VF-49W"/>
+                            <constraint firstItem="lzz-CA-qlT" firstAttribute="leading" secondItem="6Sf-LT-1vO" secondAttribute="leading" id="gL5-6Q-hQ0"/>
+                            <constraint firstItem="Cxx-tZ-ohJ" firstAttribute="leading" secondItem="mOf-pu-u9c" secondAttribute="leading" constant="30" id="mf8-lF-not"/>
+                            <constraint firstItem="lzz-CA-qlT" firstAttribute="top" secondItem="6Sf-LT-1vO" secondAttribute="top" id="sSv-UM-fvq"/>
+                            <constraint firstItem="Cxx-tZ-ohJ" firstAttribute="centerX" secondItem="mOf-pu-u9c" secondAttribute="centerX" id="tH8-9V-fih"/>
+                        </constraints>
+                    </view>
+                    <size key="freeformSize" width="375" height="840"/>
+                    <connections>
+                        <outlet property="continueButton" destination="1wn-l4-ScU" id="Dt0-z4-7BC"/>
+                        <outlet property="topBar" destination="lzz-CA-qlT" id="9ka-cE-qm4"/>
+                        <outlet property="useLinkLabel" destination="Cxx-tZ-ohJ" id="bxb-M5-qlw"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="IP3-rt-aKd" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="967" y="100"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="back" width="10.666666984558105" height="18.666666030883789"/>
+        <namedColor name="grayText">
+            <color red="0.56499999761581421" green="0.56499999761581421" blue="0.56499999761581421" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="mainBlue">
+            <color red="0.0" green="0.0040000001899898052" blue="0.54500001668930054" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+    </resources>
+</document>

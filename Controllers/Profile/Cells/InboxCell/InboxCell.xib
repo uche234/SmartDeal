@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19455" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19454"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="metropolis.regular.otf">
+            <string>Metropolis-Regular</string>
+        </array>
+        <array key="metropolis.semi-bold.otf">
+            <string>Metropolis-SemiBold</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="none" indentationWidth="10" rowHeight="84" id="KGk-i7-Jjw" customClass="InboxCell" customModule="Dilblitz" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="448" height="84"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="448" height="84"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xEw-cA-kN5" customClass="RoundedViewWithShadow" customModule="Dilblitz" customModuleProvider="target">
+                        <rect key="frame" x="16" y="12" width="416" height="60"/>
+                        <subviews>
+                            <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uhB-4O-JjY" userLabel="MailBg">
+                                <rect key="frame" x="8" y="9" width="42" height="42"/>
+                                <subviews>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="email" translatesAutoresizingMaskIntoConstraints="NO" id="Qf5-Ub-SKf">
+                                        <rect key="frame" x="10" y="10" width="22" height="22"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="22" id="2nR-eF-d0y"/>
+                                            <constraint firstAttribute="width" secondItem="Qf5-Ub-SKf" secondAttribute="height" multiplier="1:1" id="oQb-cm-wDl"/>
+                                        </constraints>
+                                    </imageView>
+                                </subviews>
+                                <color key="backgroundColor" name="tGrayBg"/>
+                                <constraints>
+                                    <constraint firstItem="Qf5-Ub-SKf" firstAttribute="centerX" secondItem="uhB-4O-JjY" secondAttribute="centerX" id="LO9-z5-kWW"/>
+                                    <constraint firstItem="Qf5-Ub-SKf" firstAttribute="centerY" secondItem="uhB-4O-JjY" secondAttribute="centerY" id="fM3-8E-AIP"/>
+                                    <constraint firstAttribute="width" secondItem="uhB-4O-JjY" secondAttribute="height" multiplier="1:1" id="ola-EX-jHS"/>
+                                </constraints>
+                            </view>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="jYh-Us-ZRO" userLabel="VStack View">
+                                <rect key="frame" x="63" y="13" width="313" height="34"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kZr-j6-WPS">
+                                        <rect key="frame" x="0.0" y="0.0" width="61" height="12"/>
+                                        <fontDescription key="fontDescription" name="Metropolis-SemiBold" family="Metropolis" pointSize="12"/>
+                                        <color key="textColor" name="mainBlue"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label Description" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="L1Z-Bk-wvE">
+                                        <rect key="frame" x="0.0" y="22" width="100.5" height="12"/>
+                                        <fontDescription key="fontDescription" name="Metropolis-Regular" family="Metropolis" pointSize="12"/>
+                                        <color key="textColor" name="darkGrayText"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                            </stackView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="u1D-ae-RIq">
+                                <rect key="frame" x="376" y="10" width="40" height="40"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="u1D-ae-RIq" secondAttribute="height" multiplier="1:1" id="cos-Bh-rya"/>
+                                    <constraint firstAttribute="height" constant="40" id="riq-fd-MMG"/>
+                                </constraints>
+                                <inset key="imageEdgeInsets" minX="16" minY="0.0" maxX="16" maxY="0.0"/>
+                                <state key="normal" image="more"/>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="u1D-ae-RIq" firstAttribute="leading" secondItem="jYh-Us-ZRO" secondAttribute="trailing" id="FwL-KN-7hL"/>
+                            <constraint firstAttribute="trailing" secondItem="u1D-ae-RIq" secondAttribute="trailing" id="Jdg-7R-gMx"/>
+                            <constraint firstAttribute="height" constant="60" id="U2S-Zx-lBy"/>
+                            <constraint firstItem="jYh-Us-ZRO" firstAttribute="centerY" secondItem="xEw-cA-kN5" secondAttribute="centerY" id="UWt-sl-IRc"/>
+                            <constraint firstItem="uhB-4O-JjY" firstAttribute="top" secondItem="xEw-cA-kN5" secondAttribute="top" constant="9" id="UXv-Go-giM"/>
+                            <constraint firstItem="uhB-4O-JjY" firstAttribute="leading" secondItem="xEw-cA-kN5" secondAttribute="leading" constant="8" id="VSW-zp-Pwt"/>
+                            <constraint firstAttribute="trailing" secondItem="u1D-ae-RIq" secondAttribute="trailing" id="VVJ-DG-1lz"/>
+                            <constraint firstItem="jYh-Us-ZRO" firstAttribute="leading" secondItem="uhB-4O-JjY" secondAttribute="trailing" constant="13" id="ZsD-K0-TIV"/>
+                            <constraint firstItem="uhB-4O-JjY" firstAttribute="centerY" secondItem="xEw-cA-kN5" secondAttribute="centerY" id="f03-uM-28t"/>
+                            <constraint firstItem="u1D-ae-RIq" firstAttribute="centerY" secondItem="xEw-cA-kN5" secondAttribute="centerY" id="q22-UO-oK6"/>
+                        </constraints>
+                    </view>
+                </subviews>
+                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                <constraints>
+                    <constraint firstItem="xEw-cA-kN5" firstAttribute="centerX" secondItem="H2p-sc-9uM" secondAttribute="centerX" id="gLI-up-jTf"/>
+                    <constraint firstItem="xEw-cA-kN5" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" priority="250" constant="8" id="gsX-Ij-DX0"/>
+                    <constraint firstItem="xEw-cA-kN5" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="pcH-qO-Mj1"/>
+                    <constraint firstItem="xEw-cA-kN5" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="vxu-7L-xUR"/>
+                </constraints>
+            </tableViewCellContentView>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <connections>
+                <outlet property="bgView" destination="xEw-cA-kN5" id="P43-d7-cTj"/>
+                <outlet property="detailsLabel" destination="L1Z-Bk-wvE" id="UEL-Wm-GXl"/>
+                <outlet property="mailBgView" destination="uhB-4O-JjY" id="O1I-kI-g09"/>
+                <outlet property="titleLabel" destination="kZr-j6-WPS" id="6sH-pR-7lw"/>
+            </connections>
+            <point key="canvasLocation" x="233.33333333333334" y="153.34821428571428"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="email" width="22.333333969116211" height="16"/>
+        <image name="more" width="10.333333015441895" height="12.333333015441895"/>
+        <namedColor name="darkGrayText">
+            <color red="0.32899999618530273" green="0.32899999618530273" blue="0.32899999618530273" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="mainBlue">
+            <color red="0.0" green="0.0040000001899898052" blue="0.54500001668930054" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="tGrayBg">
+            <color red="0.0" green="0.0" blue="0.55000001192092896" alpha="0.10000000149011612" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+    </resources>
+</document>

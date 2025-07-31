@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="23504" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="mKj-S5-zY7">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23506"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="metropolis.medium.otf">
+            <string>Metropolis-Medium</string>
+        </array>
+        <array key="metropolis.semi-bold.otf">
+            <string>Metropolis-SemiBold</string>
+        </array>
+    </customFonts>
+    <scenes>
+        <!--Onboarding View Controller-->
+        <scene sceneID="BiN-MJ-Bpc">
+            <objects>
+                <viewController modalPresentationStyle="fullScreen" id="mKj-S5-zY7" customClass="OnboardingViewController" customModule="Dilblitz" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="zRu-Zg-SDy">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3UK-VT-K2I">
+                                <rect key="frame" x="177" y="744" width="60" height="38"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ics-C8-20d">
+                                        <rect key="frame" x="0.0" y="0.0" width="60" height="38"/>
+                                        <fontDescription key="fontDescription" name="Metropolis-Medium" family="Metropolis" pointSize="18"/>
+                                        <inset key="contentEdgeInsets" minX="10" minY="10" maxX="10" maxY="10"/>
+                                        <state key="normal" title="SKIP">
+                                            <color key="titleColor" name="mainBlue"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="didTapSkipButton" destination="mKj-S5-zY7" eventType="touchUpInside" id="MDk-Xt-zQY"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                            </stackView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cX0-Uq-1sr">
+                                <rect key="frame" x="83" y="624" width="248" height="38"/>
+                                <color key="backgroundColor" name="mainBlue"/>
+                                <fontDescription key="fontDescription" name="Metropolis-SemiBold" family="Metropolis" pointSize="18"/>
+                                <inset key="contentEdgeInsets" minX="0.0" minY="10" maxX="0.0" maxY="10"/>
+                                <state key="normal" title="Next">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="layer.cornerRadius" value="21"/>
+                                </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="didTapNextButton" destination="mKj-S5-zY7" eventType="touchUpInside" id="PKf-Tf-e5T"/>
+                                </connections>
+                            </button>
+                            <view contentMode="scaleToFill" placeholderIntrinsicWidth="100" placeholderIntrinsicHeight="20" translatesAutoresizingMaskIntoConstraints="NO" id="GDv-pR-Knz" customClass="CHIPageControlAji" customModule="CHIPageControl">
+                                <rect key="frame" x="157" y="592" width="100" height="20"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="tintColor" name="grayText"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="20" id="2vh-pm-whJ"/>
+                                </constraints>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="hidesForSinglePage" value="YES"/>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
+                                        <real key="value" value="1"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="currentPageTintColor">
+                                        <color key="value" name="mainBlue"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="inactiveTransparency">
+                                        <real key="value" value="0.0"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="padding">
+                                        <real key="value" value="9"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="numberOfPages">
+                                        <integer key="value" value="3"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="radius">
+                                        <real key="value" value="3"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </view>
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" pagingEnabled="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="AdC-VT-NSh">
+                                <rect key="frame" x="0.0" y="108" width="414" height="480"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="SgD-8F-Vfz">
+                                    <size key="itemSize" width="128" height="128"/>
+                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                </collectionViewFlowLayout>
+                                <cells/>
+                            </collectionView>
+                            <button opaque="NO" alpha="0.0" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="frl-tl-yMm">
+                                <rect key="frame" x="24" y="64" width="44" height="44"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="44" id="5rA-sj-oRV"/>
+                                    <constraint firstAttribute="width" secondItem="frl-tl-yMm" secondAttribute="height" multiplier="1:1" id="aao-IU-zil"/>
+                                </constraints>
+                                <inset key="imageEdgeInsets" minX="6" minY="10" maxX="24" maxY="10"/>
+                                <state key="normal" image="back"/>
+                                <connections>
+                                    <action selector="didTapBackButton" destination="mKj-S5-zY7" eventType="touchUpInside" id="7ef-S9-NOQ"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="JZZ-li-slW"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="GDv-pR-Knz" firstAttribute="top" secondItem="AdC-VT-NSh" secondAttribute="bottom" constant="4" id="2iH-Sy-1rO"/>
+                            <constraint firstItem="GDv-pR-Knz" firstAttribute="centerX" secondItem="zRu-Zg-SDy" secondAttribute="centerX" id="H6t-Yg-u4I"/>
+                            <constraint firstItem="cX0-Uq-1sr" firstAttribute="width" secondItem="zRu-Zg-SDy" secondAttribute="width" multiplier="0.6" id="Oxg-9G-0Fi"/>
+                            <constraint firstItem="JZZ-li-slW" firstAttribute="trailing" secondItem="AdC-VT-NSh" secondAttribute="trailing" id="SgO-iu-sQ8"/>
+                            <constraint firstItem="cX0-Uq-1sr" firstAttribute="centerX" secondItem="JZZ-li-slW" secondAttribute="centerX" id="TnV-ZX-TUt"/>
+                            <constraint firstItem="3UK-VT-K2I" firstAttribute="centerX" secondItem="JZZ-li-slW" secondAttribute="centerX" id="UAH-tg-50Z"/>
+                            <constraint firstItem="JZZ-li-slW" firstAttribute="bottom" secondItem="GDv-pR-Knz" secondAttribute="bottom" constant="250" id="Zsq-Zr-Z2b"/>
+                            <constraint firstItem="JZZ-li-slW" firstAttribute="bottom" secondItem="3UK-VT-K2I" secondAttribute="bottom" constant="80" id="gHg-Uz-bIO"/>
+                            <constraint firstItem="AdC-VT-NSh" firstAttribute="top" secondItem="JZZ-li-slW" secondAttribute="top" constant="60" id="idn-hs-zX9"/>
+                            <constraint firstItem="cX0-Uq-1sr" firstAttribute="top" secondItem="GDv-pR-Knz" secondAttribute="bottom" constant="12" id="ixX-0Y-Mfa"/>
+                            <constraint firstItem="frl-tl-yMm" firstAttribute="top" secondItem="JZZ-li-slW" secondAttribute="top" constant="16" id="ju7-Ya-peY"/>
+                            <constraint firstItem="frl-tl-yMm" firstAttribute="leading" secondItem="JZZ-li-slW" secondAttribute="leading" constant="24" id="sCO-aY-Li2"/>
+                            <constraint firstItem="AdC-VT-NSh" firstAttribute="leading" secondItem="JZZ-li-slW" secondAttribute="leading" id="yBf-9R-DU2"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="backButton" destination="frl-tl-yMm" id="AHJ-jj-xRY"/>
+                        <outlet property="collectionView" destination="AdC-VT-NSh" id="6fU-dB-FgJ"/>
+                        <outlet property="customPageControl" destination="GDv-pR-Knz" id="nzn-B3-t5n"/>
+                        <outlet property="nextButton" destination="cX0-Uq-1sr" id="v4g-J5-wlh"/>
+                        <outlet property="skipButton" destination="ics-C8-20d" id="xVO-j9-psh"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Quu-45-p1l" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="300" y="173"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="back" width="10.666666984558105" height="18.666666030883789"/>
+        <namedColor name="grayText">
+            <color red="0.56470588235294117" green="0.56470588235294117" blue="0.56470588235294117" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="mainBlue">
+            <color red="0.0" green="0.0040000001899898052" blue="0.54500001668930054" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>
