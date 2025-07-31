@@ -28,6 +28,16 @@ let COLLECTION_DELETION_QUEUE = "DeletionQueue"
 let COLLECTION_RULES = "Rules"
 let COLLECTION_ANALYTICS = "Analytics"
 let COLLECTION_APPROVALS = "Approvals"
+let COLLECTION_BUSINESSES = "businesses"
+let COLLECTION_BUSINESS_SETTINGS = "settings"
+let COLLECTION_BUSINESS_EPOS_CONFIG = "eposConfig"
+let COLLECTION_BUSINESS_INVENTORY = "inventory"
+let COLLECTION_BUSINESS_SALES = "sales"
+let COLLECTION_BUSINESS_RULES = "rules"
+let COLLECTION_BUSINESS_ACTIVE_DEAL = "activeDeal"
+let COLLECTION_BUSINESS_ANALYTICS = "analytics"
+let COLLECTION_BUSINESS_RULE_ADJUSTMENTS = "ruleAdjustments"
+let COLLECTION_BUSINESS_NOTIFICATIONS = "notifications"
 
 class FirestoreManager {
     static let shared: FirestoreManager = FirestoreManager()
@@ -1059,5 +1069,34 @@ class FirestoreManager {
         db.collection(COLLECTION_ANALYTICS).document(id).delete { error in
             completion(error == nil ? nil : Constants.Error.unexpectedError)
         }
+    }
+
+    //MARK: - Businesses
+    func fetchBusinessDocument(businessId: String,
+                               subcollection: String,
+                               documentId: String,
+                               completion: @escaping ([String: Any]?)->Void) {
+        db.collection(COLLECTION_BUSINESSES)
+            .document(businessId)
+            .collection(subcollection)
+            .document(documentId)
+            .getDocument { snapshot, error in
+                guard error == nil else { return completion(nil) }
+                completion(snapshot?.data())
+            }
+    }
+
+    func setBusinessDocument(businessId: String,
+                              subcollection: String,
+                              documentId: String,
+                              data: [String: Any],
+                              completion: @escaping (String?)->Void) {
+        db.collection(COLLECTION_BUSINESSES)
+            .document(businessId)
+            .collection(subcollection)
+            .document(documentId)
+            .setData(data, merge: true) { error in
+                completion(error == nil ? nil : Constants.Error.unexpectedError)
+            }
     }
 }
