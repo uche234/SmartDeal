@@ -57,3 +57,33 @@ exports.generateAISmartDealSuggestion = functions.https.onCall(async (data, cont
   }));
   return { suggestions };
 });
+
+exports.dispatchNotifications = functions.firestore
+  .document('PendingDeals/{dealId}')
+  .onUpdate(async (change, context) => {
+    const before = change.before.data() || {};
+    const after = change.after.data() || {};
+    if (!before.approved && after.approved) {
+      const tokensSnap = await admin
+        .firestore()
+        .collection('Tokens')
+        .where('type', '==', 'customer')
+        .get();
+      const tokens = tokensSnap.docs
+        .map((doc) => doc.data().token)
+        .filter((t) => !!t);
+      if (tokens.length > 0) {
+        const message = {
+          notification: {
+            title: after.promotion || 'New Deal',
+            body: after.description || '',
+          },
+          tokens,
+        };
+        await admin.messaging().sendMulticast(message);
+      }
+      await admin.firestore().collection('Deals').doc(change.after.id).set(after);
+      await change.after.ref.delete();
+    }
+    return null;
+  });

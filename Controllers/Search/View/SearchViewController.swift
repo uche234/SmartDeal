@@ -171,7 +171,7 @@ class SearchViewController: UIViewController {
         }
         FirestoreManager.shared.fetchDeals { [unowned self] deals in
             self.activityIndicatorContainer.stopActivityAnimating()
-            self.allDeals = deals
+            self.allDeals = deals?.filter { $0.approved }
             self.filterDeals()
         }
     }
@@ -232,9 +232,9 @@ class SearchViewController: UIViewController {
     func fetchDeals(category: DealCategory) {
         FirestoreManager.shared.fetchDeals(categoryId: category.documentId) { [weak self] data in
             guard let self = self else { return }
-            
+
             self.activityIndicatorContainer.stopActivityAnimating()
-            self.tableData = data ?? []
+            self.tableData = (data ?? []).filter { $0.approved }
             self.noDealsView.isHidden = !self.tableData.isEmpty
         }
     }
