@@ -215,7 +215,40 @@ exports.scheduledRuleCheck = functions.pubsub
 
     for (const businessDoc of businessesSnap.docs) {
       const businessId = businessDoc.id;
-      const businessData = businessDoc.data() || {};
+      let businessData = businessDoc.data() || {};
+
+      const adapter = await loadEposAdapter(businessId);
+      let salesData = [];
+      let inventoryData = [];
+
+      if (adapter) {
+        try {
+          const since = new Date();
+          since.setDate(since.getDate() - 7);
+          if (typeof adapter.fetchSales === 'function') {
+            salesData = await adapter.fetchSales({ since });
+          }
+          if (typeof adapter.fetchInventory === 'function') {
+            inventoryData = await adapter.fetchInventory({ since });
+          }
+        } catch (err) {
+          console.error(`EPOS adapter failed for ${businessId}:`, err);
+        }
+      }
+
+      const salesTotal = Array.isArray(salesData)
+        ? salesData.reduce((sum, s) => sum + (s.total || s.amount || 0), 0)
+        : 0;
+      const inventoryTotal = Array.isArray(inventoryData)
+        ? inventoryData.reduce((sum, i) => sum + (i.quantity || 0), 0)
+        : 0;
+
+      businessData = {
+        ...businessData,
+        sales: salesTotal,
+        stock: inventoryTotal,
+      };
+
       const rulesSnap = await db
         .collection('businesses')
         .doc(businessId)
@@ -230,6 +263,8 @@ exports.scheduledRuleCheck = functions.pubsub
           ruleId: result.ruleId,
           triggerType: result.triggerType,
           triggeredAt: timestamp,
+          salesTotal,
+          inventoryTotal,
         };
         await db
           .collection('businesses')
