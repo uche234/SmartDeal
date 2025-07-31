@@ -93,3 +93,25 @@ following to test the rule system:
 
 The function responds with a list of results showing whether each rule was
 triggered based on the provided business data.
+
+## EPOS Provider Configuration
+
+SmartDeal integrates with multiple EPOS systems through adapter modules. Each
+business stores credentials in the Firestore document:
+
+```
+businesses/{businessId}/settings/eposConfig
+```
+
+The configuration object must contain at least a `provider` field specifying one
+of the supported providers (`square`, `lightspeed`, `clover`, `toast`,
+`shopify`, `vend`, `eposnow`). The remaining fields depend on the provider but
+typically include:
+
+- `apiKey` or `accessToken` – authentication token issued by the EPOS provider
+- `storeId` or `locationId` – identifier for the store or location
+- `merchantId` – merchant account identifier if required
+
+Adapters read these values via `adapter.config` inside Cloud Functions. Update
+the `eposConfig` document with the required keys for your provider before using
+any EPOS features.
