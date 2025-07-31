@@ -57,3 +57,69 @@ exports.generateAISmartDealSuggestion = functions.https.onCall(async (data, cont
   }));
   return { suggestions };
 });
+
+const db = admin.firestore();
+
+exports.evaluateRules = functions.pubsub
+  .schedule('every 60 minutes')
+  .onRun(async () => {
+    const snapshot = await db.collection('rules').get();
+    const evaluations = [];
+    for (const doc of snapshot.docs) {
+      const rule = doc.data();
+      const inventory = rule.inventoryLevel || Math.floor(Math.random() * 100);
+      const salesTrend = rule.salesTrend || Math.random();
+      const shouldDeal =
+        inventory < (rule.inventoryThreshold || 50) &&
+        salesTrend > (rule.salesTrendThreshold || 0.5);
+
+      const evaluation = {
+        ruleId: doc.id,
+        inventory,
+        salesTrend,
+        shouldDeal,
+      };
+
+      console.log('evaluateRules result:', evaluation);
+      await db.collection('rule_evaluations').add({
+        ...evaluation,
+        timestamp: admin.firestore.FieldValue.serverTimestamp(),
+      });
+
+      if (shouldDeal) {
+        const dealId = uuidv4();
+        await db
+          .collection('pending_approval')
+          .doc(dealId)
+          .set({
+            id: dealId,
+            ruleId: doc.id,
+            createdAt: admin.firestore.FieldValue.serverTimestamp(),
+            evaluation,
+          });
+      }
+
+      evaluations.push(evaluation);
+    }
+
+    return null;
+  });
+
+exports.tuneRuleThresholds = functions.pubsub
+  .schedule('every monday 00:00')
+  .onRun(async () => {
+    const snapshot = await db.collection('rules').get();
+    for (const doc of snapshot.docs) {
+      const rule = doc.data();
+      const newThreshold =
+        (rule.inventoryThreshold || 50) * (1 + (Math.random() - 0.5) * 0.1);
+      await db
+        .collection('rules')
+        .doc(doc.id)
+        .update({ inventoryThreshold: newThreshold });
+      console.log(
+        `tuneRuleThresholds updated rule ${doc.id} to ${newThreshold}`
+      );
+    }
+    return null;
+  });
