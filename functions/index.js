@@ -106,6 +106,82 @@ exports.fetchExternalData = functions.https.onRequest(async (req, res) => {
   }
 });
 
+exports.initializeBusinessRules = functions.firestore
+  .document('businesses/{businessId}')
+  .onCreate(async (snap, context) => {
+    const businessId = context.params.businessId;
+    const adapter = await loadEposAdapter(businessId);
+    if (!adapter) {
+      console.error(`initializeBusinessRules: missing EPOS config for ${businessId}`);
+      return null;
+    }
+
+    let salesData = [];
+    let inventoryData = [];
+    try {
+      const since = new Date();
+      since.setDate(since.getDate() - 30);
+      if (typeof adapter.fetchSales === 'function') {
+        salesData = await adapter.fetchSales({ since });
+      }
+      if (typeof adapter.fetchInventory === 'function') {
+        inventoryData = await adapter.fetchInventory({ since });
+      }
+    } catch (err) {
+      const provider = adapter.constructor?.name || 'unknown';
+      const message = err?.response?.data || err.message;
+      console.error(`EPOS adapter ${provider} failed for ${businessId}:`, message);
+    }
+
+    const totalSales = Array.isArray(salesData)
+      ? salesData.reduce((sum, s) => sum + (s.total || s.amount || 0), 0)
+      : 0;
+    const avgDailySales = totalSales / 30;
+    const totalInventory = Array.isArray(inventoryData)
+      ? inventoryData.reduce((sum, i) => sum + (i.quantity || 0), 0)
+      : 0;
+    const avgInventory = inventoryData.length > 0 ? totalInventory / inventoryData.length : 0;
+
+    let upcomingHoliday = null;
+    let temperature = null;
+    try {
+      const holidayRes = await axios.get('https://example.com/holidays');
+      upcomingHoliday = holidayRes.data?.upcomingHoliday || null;
+    } catch (err) {
+      console.error('initializeBusinessRules holiday fetch error:', err.message);
+    }
+    try {
+      const weatherRes = await axios.get('https://example.com/weather');
+      temperature = weatherRes.data?.temperature || null;
+    } catch (err) {
+      console.error('initializeBusinessRules weather fetch error:', err.message);
+    }
+
+    let expirationThreshold = 7;
+    if (upcomingHoliday || (typeof temperature === 'number' && temperature < 0)) {
+      expirationThreshold = 3;
+    }
+
+    const rules = [
+      { triggerType: 'low_sales', threshold: Math.round(avgDailySales * 0.5) },
+      { triggerType: 'surplus_stock', threshold: Math.round(avgInventory * 1.2) },
+      { triggerType: 'expiration_soon', threshold: expirationThreshold },
+    ];
+
+    const db = admin.firestore();
+    const batch = db.batch();
+    const ref = db.collection('businesses').doc(businessId).collection('rules');
+    for (const rule of rules) {
+      batch.set(ref.doc(), rule);
+    }
+    try {
+      await batch.commit();
+    } catch (err) {
+      console.error(`initializeBusinessRules failed for ${businessId}:`, err);
+    }
+    return null;
+  });
+
 exports.processCsvUpload = functions.storage.object().onFinalize(async (object) => {
   if (!object.name.endsWith('.csv')) return null;
   const rows = [];
