@@ -92,11 +92,8 @@ exports.aiRecommendation = functions.https.onCall(async (data, context) => {
   return { suggestions };
 });
 
-exports.evaluateRules = functions.https.onCall(async (data, context) => {
-  const rules = Array.isArray(data.rules) ? data.rules : [];
-  const businessData = data.businessData || {};
-
-  const results = rules.map((rule) => {
+function evaluateRulesInternal(rules = [], businessData = {}) {
+  return rules.map((rule) => {
     const handler = triggerHandlers[rule.triggerType];
     const triggered = handler ? handler(businessData, rule) : false;
     return {
@@ -105,7 +102,13 @@ exports.evaluateRules = functions.https.onCall(async (data, context) => {
       triggered,
     };
   });
+}
 
+exports.evaluateRules = functions.https.onCall(async (data, context) => {
+  const rules = Array.isArray(data.rules) ? data.rules : [];
+  const businessData = data.businessData || {};
+
+  const results = evaluateRulesInternal(rules, businessData);
   return { results };
 });
 
@@ -202,3 +205,46 @@ exports.dispatchNotifications = functions.firestore
   });
 
 exports.loadEposAdapter = loadEposAdapter;
+
+exports.scheduledRuleCheck = functions.pubsub
+  .schedule('every 7 days')
+  .onRun(async () => {
+    const db = admin.firestore();
+    const businessesSnap = await db.collection('businesses').get();
+    const timestamp = admin.firestore.FieldValue.serverTimestamp();
+
+    for (const businessDoc of businessesSnap.docs) {
+      const businessId = businessDoc.id;
+      const businessData = businessDoc.data() || {};
+      const rulesSnap = await db
+        .collection('businesses')
+        .doc(businessId)
+        .collection('rules')
+        .get();
+      const rules = rulesSnap.docs.map((d) => ({ ...d.data(), documentId: d.id }));
+      const results = evaluateRulesInternal(rules, businessData);
+
+      for (const result of results) {
+        if (!result.triggered) continue;
+        const dealData = {
+          ruleId: result.ruleId,
+          triggerType: result.triggerType,
+          triggeredAt: timestamp,
+        };
+        await db
+          .collection('businesses')
+          .doc(businessId)
+          .collection('activeDeal')
+          .add(dealData);
+        await db
+          .collection('businesses')
+          .doc(businessId)
+          .collection('analytics')
+          .doc('deals')
+          .collection('history')
+          .add(dealData);
+      }
+    }
+
+    return null;
+  });
