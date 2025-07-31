@@ -27,6 +27,7 @@ let COLLECTION_RATINGS = "Ratings"
 let COLLECTION_DELETION_QUEUE = "DeletionQueue"
 let COLLECTION_RULES = "Rules"
 let COLLECTION_ANALYTICS = "Analytics"
+let COLLECTION_APPROVALS = "Approvals"
 
 class FirestoreManager {
     static let shared: FirestoreManager = FirestoreManager()
@@ -839,6 +840,23 @@ class FirestoreManager {
 
     func markPendingDealApproved(id: String, completion: @escaping (String?)->Void) {
         db.collection(COLLECTION_PENDING_DEALS).document(id).updateData([DealItemKey.approved : true]) { error in
+            completion(error == nil ? nil : Constants.Error.unexpectedError)
+        }
+    }
+
+    func fetchApprovals(completion: @escaping ([DealItem]?)->Void) {
+        db.collection(COLLECTION_APPROVALS)
+            .whereField(DealItemKey.userId, isEqualTo: currentUser?.uid ?? "")
+            .getDocuments { snapshot, error in
+                guard error == nil else { return completion(nil) }
+
+                let result = (snapshot?.documents ?? []).compactMap { DealItem($0) }
+                completion(result)
+            }
+    }
+
+    func redeemApprovedDeal(id: String, completion: @escaping (String?)->Void) {
+        db.collection(COLLECTION_APPROVALS).document(id).updateData([DealItemKey.redeemed : true]) { error in
             completion(error == nil ? nil : Constants.Error.unexpectedError)
         }
     }
