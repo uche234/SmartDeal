@@ -5,6 +5,7 @@ const xml2js = require('xml2js');
 const csv = require('csv-parser');
 const {Storage} = require('@google-cloud/storage');
 const {v4: uuidv4} = require('uuid');
+const pLimit = require('p-limit');
 const {triggerHandlers} = require('./triggerHandlers');
 const {createAdapter} = require('./eposAdapters');
 
@@ -212,8 +213,9 @@ exports.scheduledRuleCheck = functions.pubsub
     const db = admin.firestore();
     const businessesSnap = await db.collection('businesses').get();
     const timestamp = admin.firestore.FieldValue.serverTimestamp();
+    const limit = pLimit(5);
 
-    for (const businessDoc of businessesSnap.docs) {
+    async function processBusiness(businessDoc) {
       const businessId = businessDoc.id;
       let businessData = businessDoc.data() || {};
 
@@ -280,6 +282,9 @@ exports.scheduledRuleCheck = functions.pubsub
           .add(dealData);
       }
     }
+
+    const tasks = businessesSnap.docs.map((doc) => limit(() => processBusiness(doc)));
+    await Promise.all(tasks);
 
     return null;
   });
