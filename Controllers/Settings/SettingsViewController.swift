@@ -44,6 +44,11 @@ class SettingsViewController: UIViewController {
             open(url: url)
         }
     }
+
+    private func openPreferences() {
+        let vc = PreferencesViewController()
+        navigationController?.pushViewController(vc, animated: true)
+    }
     
     private func logout() {
         guard !loadingView.isAnimating else { return }
@@ -104,6 +109,8 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
             sendEmail()
         case .website:
             websiteOpen()
+        case .preferences:
+            openPreferences()
         case .logout:
             logout()
         case .deleteAccount:
@@ -120,7 +127,7 @@ extension SettingsViewController: MFMailComposeViewControllerDelegate {
 }
 
 enum SettingsItem: CaseIterable {
-    case sendEmail, website, logout, deleteAccount
+    case sendEmail, website, preferences, logout, deleteAccount
     
     var title: String {
         switch self {
@@ -128,6 +135,8 @@ enum SettingsItem: CaseIterable {
             return "Send Email"
         case .website:
             return "Website"
+        case .preferences:
+            return "Preferences"
         case .logout:
             return "Logout"
         case .deleteAccount:
