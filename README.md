@@ -24,6 +24,22 @@ firebase deploy --only firestore:indexes
 
 This will create the index on `users.businessId` required for querying users by business.
 
+## Firestore Rules
+
+Security rules for Firestore reside in `firestore.rules`. After updating the rules, deploy them with:
+
+```bash
+firebase deploy --only firestore:rules
+```
+
+Customers now have an `availableDeals` subcollection which restricts access so a user can only read or write their own deals:
+
+```
+match /Customers/{userId}/availableDeals/{docId} {
+  allow read, write: if request.auth != null && request.auth.uid == userId;
+}
+```
+
 ## Packaging a Release
 
 To bundle the cloud functions, iOS source and any available PDF documentation into a single archive run:
