@@ -13,26 +13,31 @@ admin.initializeApp();
 const storage = new Storage();
 
 async function loadEposAdapter(businessId) {
-  const snap = await admin
-    .firestore()
-    .doc(`businesses/${businessId}/settings`)
-    .collection('eposConfig')
-    .limit(1)
-    .get();
+  try {
+    const snap = await admin
+      .firestore()
+      .doc(`businesses/${businessId}/settings`)
+      .collection('eposConfig')
+      .limit(1)
+      .get();
 
-  if (snap.empty) {
+    if (snap.empty) {
+      return null;
+    }
+
+    const config = snap.docs[0].data() || {};
+    const provider = config.provider;
+    if (!provider) {
+      return null;
+    }
+
+    const adapter = createAdapter(provider);
+    adapter.config = config;
+    return adapter;
+  } catch (err) {
+    console.error(`Failed to load EPOS adapter for ${businessId}:`, err);
     return null;
   }
-
-  const config = snap.docs[0].data() || {};
-  const provider = config.provider;
-  if (!provider) {
-    return null;
-  }
-
-  const adapter = createAdapter(provider);
-  adapter.config = config;
-  return adapter;
 }
 
 exports.fetchExternalData = functions.https.onRequest(async (req, res) => {
@@ -121,27 +126,39 @@ async function assignDealsToUsersByPreferenceInternal(dealId, dealData) {
   const userMatches = new Map();
 
   if (category) {
-    const interestSnap = await db
-      .collection('users')
-      .where('preferences.interests', 'array-contains', category)
-      .get();
-    interestSnap.forEach((doc) => {
-      if (!userMatches.has(doc.id)) {
-        userMatches.set(doc.id, 'interest');
-      }
-    });
+    try {
+      const interestSnap = await db
+        .collection('users')
+        .where('preferences.interests', 'array-contains', category)
+        .get();
+      interestSnap.forEach((doc) => {
+        if (!userMatches.has(doc.id)) {
+          userMatches.set(doc.id, 'interest');
+        }
+      });
+    } catch (err) {
+      console.error(`Failed fetching interest users for deal ${dealId}:`, err);
+    }
   }
 
   if (businessType) {
-    const typeSnap = await db
-      .collection('users')
-      .where('preferences.preferredBusinessTypes', 'array-contains', businessType)
-      .get();
-    typeSnap.forEach((doc) => {
-      if (!userMatches.has(doc.id)) {
-        userMatches.set(doc.id, 'businessType');
-      }
-    });
+    try {
+      const typeSnap = await db
+        .collection('users')
+        .where(
+          'preferences.preferredBusinessTypes',
+          'array-contains',
+          businessType
+        )
+        .get();
+      typeSnap.forEach((doc) => {
+        if (!userMatches.has(doc.id)) {
+          userMatches.set(doc.id, 'businessType');
+        }
+      });
+    } catch (err) {
+      console.error(`Failed fetching business type users for deal ${dealId}:`, err);
+    }
   }
 
   const batch = db.batch();
@@ -155,7 +172,11 @@ async function assignDealsToUsersByPreferenceInternal(dealId, dealData) {
   });
 
   if (userMatches.size > 0) {
-    await batch.commit();
+    try {
+      await batch.commit();
+    } catch (err) {
+      console.error(`Failed committing deal batch for ${dealId}:`, err);
+    }
   }
 }
 
@@ -217,7 +238,8 @@ exports.scheduledRuleCheck = functions.pubsub
 
     async function processBusiness(businessDoc) {
       const businessId = businessDoc.id;
-      let businessData = businessDoc.data() || {};
+      try {
+        let businessData = businessDoc.data() || {};
 
       const adapter = await loadEposAdapter(businessId);
       let salesData = [];
@@ -251,12 +273,17 @@ exports.scheduledRuleCheck = functions.pubsub
         stock: inventoryTotal,
       };
 
-      const rulesSnap = await db
-        .collection('businesses')
-        .doc(businessId)
-        .collection('rules')
-        .get();
-      const rules = rulesSnap.docs.map((d) => ({ ...d.data(), documentId: d.id }));
+      let rules = [];
+      try {
+        const rulesSnap = await db
+          .collection('businesses')
+          .doc(businessId)
+          .collection('rules')
+          .get();
+        rules = rulesSnap.docs.map((d) => ({ ...d.data(), documentId: d.id }));
+      } catch (err) {
+        console.error(`Failed to fetch rules for ${businessId}:`, err);
+      }
       const results = evaluateRulesInternal(rules, businessData);
 
       for (const result of results) {
@@ -268,18 +295,29 @@ exports.scheduledRuleCheck = functions.pubsub
           salesTotal,
           inventoryTotal,
         };
-        await db
-          .collection('businesses')
-          .doc(businessId)
-          .collection('activeDeal')
-          .add(dealData);
-        await db
-          .collection('businesses')
-          .doc(businessId)
-          .collection('analytics')
-          .doc('deals')
-          .collection('history')
-          .add(dealData);
+        try {
+          await db
+            .collection('businesses')
+            .doc(businessId)
+            .collection('activeDeal')
+            .add(dealData);
+        } catch (err) {
+          console.error(`Failed to create activeDeal for ${businessId}:`, err);
+        }
+        try {
+          await db
+            .collection('businesses')
+            .doc(businessId)
+            .collection('analytics')
+            .doc('deals')
+            .collection('history')
+            .add(dealData);
+        } catch (err) {
+          console.error(`Failed to log deal history for ${businessId}:`, err);
+        }
+      }
+      } catch (err) {
+        console.error(`Error processing business ${businessId}:`, err);
       }
     }
 
