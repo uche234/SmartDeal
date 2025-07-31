@@ -1,0 +1,81 @@
+%PDF-1.4
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Kids [3 0 R] /Count 1 >>
+endobj
+3 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Contents 4 0 R /Resources << /Font << /F1 5 0 R >> >> >>
+endobj
+4 0 obj
+<< /Length 1275 >>
+stream
+BT
+/F1 12 Tf
+72 760 Td
+(SmartDeal Architecture) Tj
+0 -14 Td
+(======================) Tj
+0 -14 Td
+() Tj
+0 -14 Td
+(Firestore Schema) Tj
+0 -14 Td
+(----------------) Tj
+0 -14 Td
+(* **Rules** collection contains `triggerType`, `threshold`, and `enabled`) Tj
+0 -14 Td
+(fields.) Tj
+0 -14 Td
+(* **Deals** collection stores promotions with price, discount and location data.) Tj
+0 -14 Td
+(* **Analytics** collection logs events with `dealId`, `userId`, `type`, and) Tj
+0 -14 Td
+(`date`.) Tj
+0 -14 Td
+(* **Notifications** collection keeps notification text and read state per user.) Tj
+0 -14 Td
+() Tj
+0 -14 Td
+(Cloud Functions) Tj
+0 -14 Td
+(---------------) Tj
+0 -14 Td
+(* **evaluateSmartDeals** scores deals via HTTPS callable function.) Tj
+0 -14 Td
+(* **generateAISmartDealSuggestion** suggests deals based on keywords.) Tj
+0 -14 Td
+(* **dispatchNotifications** moves approved deals and sends FCM messages.) Tj
+0 -14 Td
+() Tj
+0 -14 Td
+(Interfaces & QR Redemption) Tj
+0 -14 Td
+(-------------------------) Tj
+0 -14 Td
+(The iOS client displays deals and uses a QR scanner to redeem purchases. A React) Tj
+0 -14 Td
+(admin dashboard can review pending deals and tune rules. QR codes map to) Tj
+0 -14 Td
+(`purchase` documents and redemption marks them as used in Firestore.) Tj
+0 -14 Td
+ET
+endstream
+endobj
+5 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>
+endobj
+xref
+0 6
+0000000000 65535 f 
+0000000009 00000 n 
+0000000058 00000 n 
+0000000115 00000 n 
+0000000241 00000 n 
+0000001568 00000 n 
+trailer
+<< /Size 6 /Root 1 0 R >>
+startxref
+1638
+%%EOF
