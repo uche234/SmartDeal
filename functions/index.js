@@ -460,3 +460,122 @@ exports.scheduledRuleCheck = functions.pubsub
 
     return null;
   });
+
+exports.scheduledRuleAdjustment = functions.pubsub
+  .schedule('every 7 days')
+  .onRun(async () => {
+    const db = admin.firestore();
+    const businessesSnap = await db.collection('businesses').get();
+    const timestamp = admin.firestore.FieldValue.serverTimestamp();
+    const limit = pLimit(5);
+
+    async function processBusiness(businessDoc) {
+      const businessId = businessDoc.id;
+      let salesData = [];
+      let inventoryData = [];
+
+      try {
+        const adapter = await loadEposAdapter(businessId);
+        if (adapter) {
+          const since = new Date();
+          since.setDate(since.getDate() - 30);
+          if (typeof adapter.fetchSales === 'function') {
+            salesData = await adapter.fetchSales({ since });
+          }
+          if (typeof adapter.fetchInventory === 'function') {
+            inventoryData = await adapter.fetchInventory({ since });
+          }
+        }
+      } catch (err) {
+        const provider = err?.constructor?.name || 'unknown';
+        console.error(`EPOS metrics failed for ${businessId}:`, err?.message);
+      }
+
+      const salesTotal = Array.isArray(salesData)
+        ? salesData.reduce((sum, s) => sum + (s.total || s.amount || 0), 0)
+        : 0;
+      const avgDailySales = salesData.length > 0 ? salesTotal / 30 : 0;
+      const inventoryTotal = Array.isArray(inventoryData)
+        ? inventoryData.reduce((sum, i) => sum + (i.quantity || 0), 0)
+        : 0;
+      const avgInventory = inventoryData.length > 0 ? inventoryTotal / inventoryData.length : 0;
+
+      let rules = [];
+      try {
+        const rulesSnap = await db
+          .collection('businesses')
+          .doc(businessId)
+          .collection('rules')
+          .get();
+        rules = rulesSnap.docs.map((d) => ({ id: d.id, ...d.data() }));
+      } catch (err) {
+        console.error(`Failed fetching rules for ${businessId}:`, err);
+      }
+
+      const batch = db.batch();
+      let createdAdjustment = false;
+
+      for (const rule of rules) {
+        let newThreshold = rule.threshold;
+        if (rule.triggerType === 'low_sales') {
+          newThreshold = Math.round(avgDailySales * 0.5);
+        } else if (rule.triggerType === 'surplus_stock') {
+          newThreshold = Math.round(avgInventory * 1.2);
+        }
+
+        if (newThreshold !== rule.threshold) {
+          const adjustRef = db
+            .collection('businesses')
+            .doc(businessId)
+            .collection('ruleAdjustments')
+            .doc();
+          batch.set(adjustRef, {
+            ruleId: rule.id,
+            oldThreshold: rule.threshold,
+            newThreshold,
+            salesTotal,
+            inventoryTotal,
+            approved: false,
+            createdAt: timestamp,
+          });
+
+          const ruleRef = db
+            .collection('businesses')
+            .doc(businessId)
+            .collection('rules')
+            .doc(rule.id);
+          batch.update(ruleRef, { threshold: newThreshold });
+          createdAdjustment = true;
+        }
+      }
+
+      if (createdAdjustment) {
+        try {
+          const notifRef = db
+            .collection('businesses')
+            .doc(businessId)
+            .collection('notifications')
+            .doc();
+          batch.set(notifRef, {
+            createdAt: timestamp,
+            type: 'rule_update',
+            message: 'New rule adjustments pending approval',
+          });
+        } catch (err) {
+          console.error(`Failed creating notification for ${businessId}:`, err);
+        }
+      }
+
+      if (!createdAdjustment) return;
+      try {
+        await batch.commit();
+      } catch (err) {
+        console.error(`Failed applying rule adjustments for ${businessId}:`, err);
+      }
+    }
+
+    const tasks = businessesSnap.docs.map((doc) => limit(() => processBusiness(doc)));
+    await Promise.all(tasks);
+
+    return null;
+  });
