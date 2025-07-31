@@ -170,9 +170,12 @@ exports.initializeBusinessRules = functions.firestore
 
     const db = admin.firestore();
     const batch = db.batch();
-    const ref = db.collection('businesses').doc(businessId).collection('rules');
+    const ref = db
+      .collection('businesses')
+      .doc(businessId)
+      .collection('ruleApprovals');
     for (const rule of rules) {
-      batch.set(ref.doc(), rule);
+      batch.set(ref.doc(), { ...rule, approved: false });
     }
     try {
       await batch.commit();

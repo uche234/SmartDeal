@@ -38,6 +38,7 @@ let COLLECTION_BUSINESS_ACTIVE_DEAL = "activeDeal"
 let COLLECTION_BUSINESS_ANALYTICS = "analytics"
 let COLLECTION_BUSINESS_RULE_ADJUSTMENTS = "ruleAdjustments"
 let COLLECTION_BUSINESS_NOTIFICATIONS = "notifications"
+let COLLECTION_BUSINESS_RULE_APPROVALS = "ruleApprovals"
 
 class FirestoreManager {
     static let shared: FirestoreManager = FirestoreManager()
@@ -1044,6 +1045,62 @@ class FirestoreManager {
         db.collection(COLLECTION_RULES).document(id).delete { error in
             completion(error == nil ? nil : Constants.Error.unexpectedError)
         }
+    }
+
+    //MARK: - Rule Approvals
+    func fetchRuleApprovals(completion: @escaping ([RuleApproval]?)->Void) {
+        guard let userId = currentUser?.uid else { return completion(nil) }
+
+        db.collection(COLLECTION_BUSINESSES)
+            .document(userId)
+            .collection(COLLECTION_BUSINESS_RULE_APPROVALS)
+            .whereField(RuleApprovalKey.approved, isEqualTo: false)
+            .getDocuments { snapshot, error in
+                guard error == nil else { return completion(nil) }
+
+                let result = (snapshot?.documents ?? []).compactMap { RuleApproval($0) }
+                completion(result)
+            }
+    }
+
+    func approveRule(_ approval: RuleApproval, completion: @escaping (String?) -> Void) {
+        guard let userId = currentUser?.uid else { return completion(Constants.Error.unexpectedError) }
+
+        let batch = db.batch()
+        let approvalRef = db
+            .collection(COLLECTION_BUSINESSES)
+            .document(userId)
+            .collection(COLLECTION_BUSINESS_RULE_APPROVALS)
+            .document(approval.documentId)
+        batch.updateData([RuleApprovalKey.approved: true], forDocument: approvalRef)
+
+        let ruleData: [String: Any] = [
+            RuleKey.triggerType: approval.triggerType,
+            RuleKey.threshold: approval.threshold,
+            RuleKey.enabled: true,
+        ]
+        let ruleRef = db
+            .collection(COLLECTION_BUSINESSES)
+            .document(userId)
+            .collection(COLLECTION_BUSINESS_RULES)
+            .document()
+        batch.setData(ruleData, forDocument: ruleRef)
+
+        batch.commit { error in
+            completion(error == nil ? nil : Constants.Error.unexpectedError)
+        }
+    }
+
+    func rejectRule(_ approval: RuleApproval, completion: @escaping (String?) -> Void) {
+        guard let userId = currentUser?.uid else { return completion(Constants.Error.unexpectedError) }
+
+        db.collection(COLLECTION_BUSINESSES)
+            .document(userId)
+            .collection(COLLECTION_BUSINESS_RULE_APPROVALS)
+            .document(approval.documentId)
+            .delete { error in
+                completion(error == nil ? nil : Constants.Error.unexpectedError)
+            }
     }
 
     //MARK: - Analytics
