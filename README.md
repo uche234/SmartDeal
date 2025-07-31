@@ -50,6 +50,10 @@ bash scripts/package_release.sh
 
 The script produces `SmartDeal_release.zip` in the repository root containing the `functions/`, `Application/`, `Controllers/`, `Common/` and `Resources/` directories along with any `*.pdf` files it finds.
 
+## Tests
+
+There are currently no automated tests for the Firebase functions. Running `npm test` inside the `functions/` directory prints a simple message so continuous integration tools don't fail.
+
 ## Evaluating Smart Deals
 
 The `functions/index.js` file exposes a callable Cloud Function named
