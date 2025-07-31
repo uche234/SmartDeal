@@ -101,9 +101,9 @@ class ExploreViewController: UIViewController {
         
         FirestoreManager.shared.fetchDeals(for: LocationTrakingManager.shared.lastLocation?.location, enableOnline: true) { [weak self] data in
             guard let self = self else { return }
-            
+
             self.collectionView.stopActivityAnimating()
-            self.fetchedDeals = data
+            self.fetchedDeals = data?.filter { $0.approved }
             self.updateData()
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.6) {
                 self.refreshControl.endRefreshing()

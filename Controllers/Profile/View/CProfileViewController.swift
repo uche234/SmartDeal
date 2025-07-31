@@ -101,11 +101,11 @@ class CProfileViewController: UIViewController {
         UserManager.shared.updateBookmarks { [weak self] in
             FirestoreManager.shared.fetchDeals(ids: UserManager.shared.bookmarks) { [weak self] data in
                 guard let self = self else { return }
-                
+
                 var _savedDeals: [DealItem] = []
 //                var _watchList: [DealItem] = []
                 
-                for dataItem in data {
+                for dataItem in data.filter({ $0.approved }) {
 //                    if dataItem.isExpired {
                         _savedDeals.append(dataItem)
 //                    } 

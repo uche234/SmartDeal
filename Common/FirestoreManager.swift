@@ -16,6 +16,7 @@ import GoogleSignIn
 let COLLECTION_CUSTOMERS = "Customers"
 let COLLECTION_BUSINESS = "Business"
 let COLLECTION_DEALS = "Deals"
+let COLLECTION_PENDING_DEALS = "PendingDeals"
 let COLLECTION_CATEGORIES = "Categories"
 let COLLECTION_SAVED = "Saved"
 let COLLECTION_PURCHASES = "Purchases"
@@ -571,6 +572,7 @@ class FirestoreManager {
                 guard error == nil else { return completion(nil) }
 
                 var result = (snapshot?.documents ?? []).compactMap { DealItem($0) }
+                result = result.filter { $0.approved }
                 if filterExpired {
                     result = result.filter { !$0.isExpired }
                 }
@@ -587,24 +589,27 @@ class FirestoreManager {
             guard error == nil else { return completion(nil) }
 
             var result = (snapshot?.documents ?? []).compactMap { DealItem($0) }
-            result = result.filter { !$0.isExpired }
+            result = result.filter { $0.approved && !$0.isExpired }
             completion(result)
         }
     }
     
     func fetchDeals(for location: DBLocation?, enableOnline: Bool, completion: @escaping ([DealItem]?)->Void) {
         var result: [DealItem] = []
+        let finishBlock = {
+            result = result.filter { $0.approved && !$0.isExpired }
+            completion(result)
+        }
         let queryOnlineStoreBlock = {
             if enableOnline {
                 self.db.collection(COLLECTION_DEALS)
                     .whereField(DealItemKey.isOnlineStore, isEqualTo: true)
                     .getDocuments { snapshot, error in
                         result += (snapshot?.documents ?? []).compactMap { DealItem($0) }
-                        result = result.filter { !$0.isExpired }
-                        completion(result)
+                        finishBlock()
                     }
             } else {
-                completion(result)
+                finishBlock()
             }
         }
         
@@ -647,7 +652,9 @@ class FirestoreManager {
             db.collection(COLLECTION_DEALS).document(documentId).getDocument { snapshot, error in
                 queryCount += 1
                 if let snapshot = snapshot, let dealItem = DealItem(snapshot) {
-                    result.append(dealItem)
+                    if dealItem.approved {
+                        result.append(dealItem)
+                    }
                 }
                 if queryCount == ids.count {
                     completion(result)
@@ -718,6 +725,7 @@ class FirestoreManager {
             let geo: GeoPoint = GeoPoint(latitude: location.latitude, longitude: location.longitude)
             data[DealItemKey.geo] = geo
         }
+        data[DealItemKey.redeemed] = false
         
         db.collection(COLLECTION_CUSTOMERS)
             .document(userId)
@@ -743,6 +751,28 @@ class FirestoreManager {
                 completion(result)
             }
     }
+
+    func redeemPurchasedDeal(dealId: String, completion: @escaping (String?)->Void) {
+        guard let userId = FirestoreManager.shared.currentUser?.uid else {
+            Coordinator.redirectToAuth()
+            return
+        }
+
+        let collection = db.collection(COLLECTION_CUSTOMERS)
+            .document(userId)
+            .collection(COLLECTION_PURCHASES)
+            .whereField(DealItemKey.dealId, isEqualTo: dealId)
+            .whereField(DealItemKey.redeemed, isEqualTo: false)
+
+        collection.getDocuments { snapshot, error in
+            guard let doc = snapshot?.documents.first else {
+                return completion(Constants.Error.unexpectedError)
+            }
+            doc.reference.updateData([DealItemKey.redeemed: true]) { error in
+                completion(error == nil ? nil : Constants.Error.unexpectedError)
+            }
+        }
+    }
     
     //MARK: - Categories
     
@@ -766,6 +796,48 @@ class FirestoreManager {
 
             let result = (snapshot?.documents ?? []).compactMap { DealItem($0) }
             completion(result)
+        }
+    }
+
+    func fetchPendingDeals(completion: @escaping ([DealItem]?)->Void) {
+        db.collection(COLLECTION_PENDING_DEALS)
+            .whereField(DealItemKey.userId, isEqualTo: currentUser?.uid ?? "")
+            .getDocuments { snapshot, error in
+                guard error == nil else { return completion(nil) }
+
+                let result = (snapshot?.documents ?? []).compactMap { DealItem($0) }
+                completion(result)
+            }
+    }
+
+    func updatePendingDeal(id: String, model: CreateDealItem, completion: @escaping (String?)->Void) {
+        guard let userId = currentUser?.uid else { return completion(Constants.Error.unexpectedError) }
+
+        var data: [String:Any] = [DealItemKey.userId : userId,
+                                  DealItemKey.description : model.about,
+                                  DealItemKey.price : model.price,
+                                  DealItemKey.discount : model.discount,
+                                  DealItemKey.isOnlineStore : model.isOnlineStore,
+                                  DealItemKey.promotion : model.promotion,
+                                  DealItemKey.address : model.address]
+
+        if let expDate = model.expirationDate { data[DealItemKey.expirationDate] = Timestamp(date: expDate) } else { data[DealItemKey.expirationDate] = NSNull() }
+        if let location = model.location {
+            let geo: GeoPoint = GeoPoint(latitude: location.latitude, longitude: location.longitude)
+            data[DealItemKey.geo] = geo
+        } else {
+            data[DealItemKey.geo] = NSNull()
+        }
+        if let quantity = model.quantity { data[DealItemKey.quantity] = quantity } else { data[DealItemKey.quantity] = NSNull() }
+
+        db.collection(COLLECTION_PENDING_DEALS).document(id).setData(data, merge: true) { error in
+            completion(error == nil ? nil : Constants.Error.unexpectedError)
+        }
+    }
+
+    func markPendingDealApproved(id: String, completion: @escaping (String?)->Void) {
+        db.collection(COLLECTION_PENDING_DEALS).document(id).updateData([DealItemKey.approved : true]) { error in
+            completion(error == nil ? nil : Constants.Error.unexpectedError)
         }
     }
     

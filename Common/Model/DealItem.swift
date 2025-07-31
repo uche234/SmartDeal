@@ -27,6 +27,8 @@ struct DealItemKey {
     static let creationDate = "creationDate"
     static let dealId = "dealId"
     static let quantity = "quantity"
+    static let approved = "approved"
+    static let redeemed = "redeemed"
 }
 
 struct DealItem {
@@ -49,6 +51,8 @@ struct DealItem {
     let categories: [String]
     let address: String
     let purchasedCount: Int
+    let approved: Bool
+    let redeemed: Bool
     
     var isExpired: Bool {
         if let expDate = expirationDate {
@@ -92,5 +96,7 @@ struct DealItem {
         self.address = data[DealItemKey.address] as? String ?? ""
         self.rate = data[DealItemKey.rating] as? Double ?? 0.0
         self.purchasedCount = data[DealItemKey.purchased] as? Int ?? 0
+        self.approved = data[DealItemKey.approved] as? Bool ?? true
+        self.redeemed = data[DealItemKey.redeemed] as? Bool ?? false
     }
 }
