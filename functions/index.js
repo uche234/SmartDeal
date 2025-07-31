@@ -40,7 +40,7 @@ async function loadEposAdapter(businessId) {
   }
 }
 
-async function fetchEposMetrics(businessId) {
+async function fetchEposMetrics(businessId, days = 7) {
   const adapter = await loadEposAdapter(businessId);
   let salesData = [];
   let inventoryData = [];
@@ -48,7 +48,7 @@ async function fetchEposMetrics(businessId) {
   if (adapter) {
     try {
       const since = new Date();
-      since.setDate(since.getDate() - 7);
+      since.setDate(since.getDate() - days);
       if (typeof adapter.fetchSales === 'function') {
         salesData = await adapter.fetchSales({ since });
       }
@@ -69,7 +69,7 @@ async function fetchEposMetrics(businessId) {
     ? inventoryData.reduce((sum, i) => sum + (i.quantity || 0), 0)
     : 0;
 
-  return { salesTotal, inventoryTotal };
+  return { salesData, inventoryData, salesTotal, inventoryTotal };
 }
 
 async function writeDealHistoryEntry(businessId, entry) {
@@ -116,31 +116,11 @@ exports.initializeBusinessRules = functions.firestore
       return null;
     }
 
-    let salesData = [];
-    let inventoryData = [];
-    try {
-      const since = new Date();
-      since.setDate(since.getDate() - 30);
-      if (typeof adapter.fetchSales === 'function') {
-        salesData = await adapter.fetchSales({ since });
-      }
-      if (typeof adapter.fetchInventory === 'function') {
-        inventoryData = await adapter.fetchInventory({ since });
-      }
-    } catch (err) {
-      const provider = adapter.constructor?.name || 'unknown';
-      const message = err?.response?.data || err.message;
-      console.error(`EPOS adapter ${provider} failed for ${businessId}:`, message);
-    }
-
-    const totalSales = Array.isArray(salesData)
-      ? salesData.reduce((sum, s) => sum + (s.total || s.amount || 0), 0)
-      : 0;
-    const avgDailySales = totalSales / 30;
-    const totalInventory = Array.isArray(inventoryData)
-      ? inventoryData.reduce((sum, i) => sum + (i.quantity || 0), 0)
-      : 0;
-    const avgInventory = inventoryData.length > 0 ? totalInventory / inventoryData.length : 0;
+    const { salesData, inventoryData, salesTotal, inventoryTotal } =
+      await fetchEposMetrics(businessId, 30);
+    const avgDailySales = salesData.length > 0 ? salesTotal / 30 : 0;
+    const avgInventory =
+      inventoryData.length > 0 ? inventoryTotal / inventoryData.length : 0;
 
     let upcomingHoliday = null;
     let temperature = null;
@@ -386,33 +366,7 @@ exports.scheduledRuleCheck = functions.pubsub
       try {
         let businessData = businessDoc.data() || {};
 
-      const adapter = await loadEposAdapter(businessId);
-      let salesData = [];
-      let inventoryData = [];
-
-      if (adapter) {
-        try {
-          const since = new Date();
-          since.setDate(since.getDate() - 7);
-          if (typeof adapter.fetchSales === 'function') {
-            salesData = await adapter.fetchSales({ since });
-          }
-          if (typeof adapter.fetchInventory === 'function') {
-            inventoryData = await adapter.fetchInventory({ since });
-          }
-        } catch (err) {
-          const provider = adapter.constructor?.name || 'unknown';
-          const message = err?.response?.data || err.message;
-          console.error(`EPOS adapter ${provider} failed for ${businessId}:`, message);
-        }
-      }
-
-      const salesTotal = Array.isArray(salesData)
-        ? salesData.reduce((sum, s) => sum + (s.total || s.amount || 0), 0)
-        : 0;
-      const inventoryTotal = Array.isArray(inventoryData)
-        ? inventoryData.reduce((sum, i) => sum + (i.quantity || 0), 0)
-        : 0;
+      const { salesTotal, inventoryTotal } = await fetchEposMetrics(businessId);
 
       businessData = {
         ...businessData,
@@ -474,34 +428,15 @@ exports.scheduledRuleAdjustment = functions.pubsub
 
     async function processBusiness(businessDoc) {
       const businessId = businessDoc.id;
-      let salesData = [];
-      let inventoryData = [];
-
-      try {
-        const adapter = await loadEposAdapter(businessId);
-        if (adapter) {
-          const since = new Date();
-          since.setDate(since.getDate() - 30);
-          if (typeof adapter.fetchSales === 'function') {
-            salesData = await adapter.fetchSales({ since });
-          }
-          if (typeof adapter.fetchInventory === 'function') {
-            inventoryData = await adapter.fetchInventory({ since });
-          }
-        }
-      } catch (err) {
-        const provider = err?.constructor?.name || 'unknown';
-        console.error(`EPOS metrics failed for ${businessId}:`, err?.message);
-      }
-
-      const salesTotal = Array.isArray(salesData)
-        ? salesData.reduce((sum, s) => sum + (s.total || s.amount || 0), 0)
-        : 0;
+      const {
+        salesData,
+        inventoryData,
+        salesTotal,
+        inventoryTotal,
+      } = await fetchEposMetrics(businessId, 30);
       const avgDailySales = salesData.length > 0 ? salesTotal / 30 : 0;
-      const inventoryTotal = Array.isArray(inventoryData)
-        ? inventoryData.reduce((sum, i) => sum + (i.quantity || 0), 0)
-        : 0;
-      const avgInventory = inventoryData.length > 0 ? inventoryTotal / inventoryData.length : 0;
+      const avgInventory =
+        inventoryData.length > 0 ? inventoryTotal / inventoryData.length : 0;
 
       let rules = [];
       try {
