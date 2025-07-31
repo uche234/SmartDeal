@@ -1,17 +1,22 @@
 class BaseAdapter {
-  async fetchSales() {
+  async fetchSales(options = {}) {
+    void options;
     throw new Error('fetchSales not implemented');
   }
 
-  async fetchInventory() {
+  async fetchInventory(options = {}) {
+    void options;
     throw new Error('fetchInventory not implemented');
   }
 
-  async pushDeal() {
+  async pushDeal(deal, options = {}) {
+    void deal;
+    void options;
     throw new Error('pushDeal not implemented');
   }
 
-  async testConnection() {
+  async testConnection(options = {}) {
+    void options;
     throw new Error('testConnection not implemented');
   }
 }

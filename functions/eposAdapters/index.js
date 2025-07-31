@@ -1,7 +1,19 @@
 const SquareAdapter = require('./square');
+const LightspeedAdapter = require('./lightspeed');
+const CloverAdapter = require('./clover');
+const ToastAdapter = require('./toast');
+const ShopifyAdapter = require('./shopify');
+const VendAdapter = require('./vend');
+const EposNowAdapter = require('./eposnow');
 
 const adapters = {
   square: SquareAdapter,
+  lightspeed: LightspeedAdapter,
+  clover: CloverAdapter,
+  toast: ToastAdapter,
+  shopify: ShopifyAdapter,
+  vend: VendAdapter,
+  eposnow: EposNowAdapter,
 };
 
 function createAdapter(provider) {
