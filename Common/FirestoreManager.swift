@@ -296,6 +296,12 @@ class FirestoreManager {
                                   ProfileKey.gender: profile.gender?.rawValue ?? NSNull(),
                                   ProfileKey.creationDate: Timestamp(date: profile.creationDate),
                                   ProfileKey.avatar: profile.avatarUrl?.absoluteString ?? ""]
+
+        let preferences: [String: Any] = [
+            ProfileKey.interests: profile.preferences.interests,
+            ProfileKey.preferredBusinessTypes: profile.preferences.preferredBusinessTypes
+        ]
+        data[ProfileKey.preferences] = preferences
         
         if profile.isBusinessOwner {
             data[ProfileKey.category] = profile.category
@@ -334,11 +340,22 @@ class FirestoreManager {
         guard let collection = profile.type.name, !profile.uid.isEmpty else {
             return completion(true)
         }
-        
+
+        var dataToSave = data
+        var preferences = dataToSave[ProfileKey.preferences] as? [String: Any] ?? [:]
+        if let interests = dataToSave.removeValue(forKey: ProfileKey.interests) {
+            preferences[ProfileKey.interests] = interests
+        }
+        if let types = dataToSave.removeValue(forKey: ProfileKey.preferredBusinessTypes) {
+            preferences[ProfileKey.preferredBusinessTypes] = types
+        }
+        if !preferences.isEmpty {
+            dataToSave[ProfileKey.preferences] = preferences
+        }
 
         db.collection(collection)
             .document(profile.uid)
-            .setData(data, merge: true) { error in
+            .setData(dataToSave, merge: true) { error in
                 completion(error == nil)
             }
     }

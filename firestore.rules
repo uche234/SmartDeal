@@ -1,0 +1,25 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function validPreferences(pref) {
+      return pref == null ||
+             (pref.interests is list && pref.interests.size() >= 0 &&
+              pref.preferredBusinessTypes is list && pref.preferredBusinessTypes.size() >= 0);
+    }
+
+    match /Customers/{userId} {
+      allow read: if request.auth != null && request.auth.uid == userId;
+      allow create, update: if request.auth != null &&
+                            request.auth.uid == userId &&
+                            validPreferences(request.resource.data.preferences);
+    }
+
+    match /Business/{userId} {
+      allow read: if request.auth != null && request.auth.uid == userId;
+      allow create, update: if request.auth != null &&
+                            request.auth.uid == userId &&
+                            validPreferences(request.resource.data.preferences);
+    }
+  }
+}
