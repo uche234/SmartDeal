@@ -38,6 +38,24 @@ struct BusinessDashboardView: View {
                         }
                     }
                 }
+
+                if !viewModel.ruleApprovals.isEmpty {
+                    Section(header: Text("Rule Approvals")) {
+                        ForEach(viewModel.ruleApprovals, id: \.documentId) { rule in
+                            HStack {
+                                Text("\(rule.triggerType): \(rule.threshold)")
+                                Spacer()
+                                Button("Approve") {
+                                    viewModel.approve(rule: rule)
+                                }
+                                Button("Reject") {
+                                    viewModel.reject(rule: rule)
+                                }
+                                .foregroundColor(.red)
+                            }
+                        }
+                    }
+                }
             }
             .listStyle(GroupedListStyle())
             .navigationTitle("Dashboard")
