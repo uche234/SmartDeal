@@ -33,3 +33,43 @@ bash scripts/package_release.sh
 ```
 
 The script produces `SmartDeal_release.zip` in the repository root containing the `functions/`, `Application/`, `Controllers/`, `Common/` and `Resources/` directories along with any `*.pdf` files it finds.
+
+## Evaluating Smart Deals
+
+The `functions/index.js` file exposes a callable Cloud Function named
+`evaluateRules` which checks a list of rule objects against provided business
+data. The evaluation logic relies on a set of **trigger handlers** located in
+`functions/triggerHandlers.js`.
+
+### Available Trigger Handlers
+
+| Trigger Type      | Description                                                                                                              |
+| ----------------- | ------------------------------------------------------------------------------------------------------------------------ |
+| `public_holiday`  | Triggered when `businessData.publicHolidays` includes today's date or `businessData.isPublicHoliday` is `true`.           |
+| `weather_cold`    | Fires when `businessData.temperature` is less than or equal to the rule's `threshold` value.                              |
+| `news_keyword`    | Looks for `rule.keyword` inside the array `businessData.newsHeadlines`.                                                   |
+| `surplus_stock`   | Checks if `businessData.stock` is greater than the rule `threshold`.                                                      |
+| `expiration_soon` | Triggered when `businessData.expirationDate` is within `threshold` days from today.                                       |
+| `low_sales`       | Fires when `businessData.sales` is below the rule `threshold`.                                                            |
+| `birthday`        | Evaluates to `true` if today's date matches `businessData.birthday`.                                                      |
+
+### Example Usage
+
+Call the `evaluateRules` function from your client with a payload similar to the
+following to test the rule system:
+
+```json
+{
+  "rules": [
+    { "documentId": "rule1", "triggerType": "weather_cold", "threshold": 5 },
+    { "documentId": "rule2", "triggerType": "surplus_stock", "threshold": 50 }
+  ],
+  "businessData": {
+    "temperature": 3,
+    "stock": 80
+  }
+}
+```
+
+The function responds with a list of results showing whether each rule was
+triggered based on the provided business data.
