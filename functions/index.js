@@ -6,9 +6,33 @@ const csv = require('csv-parser');
 const {Storage} = require('@google-cloud/storage');
 const {v4: uuidv4} = require('uuid');
 const {triggerHandlers} = require('./triggerHandlers');
+const {createAdapter} = require('./eposAdapters');
 
 admin.initializeApp();
 const storage = new Storage();
+
+async function loadEposAdapter(businessId) {
+  const snap = await admin
+    .firestore()
+    .doc(`businesses/${businessId}/settings`)
+    .collection('eposConfig')
+    .limit(1)
+    .get();
+
+  if (snap.empty) {
+    return null;
+  }
+
+  const config = snap.docs[0].data() || {};
+  const provider = config.provider;
+  if (!provider) {
+    return null;
+  }
+
+  const adapter = createAdapter(provider);
+  adapter.config = config;
+  return adapter;
+}
 
 exports.fetchExternalData = functions.https.onRequest(async (req, res) => {
   try {
@@ -176,3 +200,5 @@ exports.dispatchNotifications = functions.firestore
     }
     return null;
   });
+
+exports.loadEposAdapter = loadEposAdapter;
