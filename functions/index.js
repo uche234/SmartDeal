@@ -5,6 +5,7 @@ const xml2js = require('xml2js');
 const csv = require('csv-parser');
 const {Storage} = require('@google-cloud/storage');
 const {v4: uuidv4} = require('uuid');
+const {triggerHandlers} = require('./triggerHandlers');
 
 admin.initializeApp();
 const storage = new Storage();
@@ -65,6 +66,23 @@ exports.generateAISmartDealSuggestion = functions.https.onCall(async (data, cont
 exports.aiRecommendation = functions.https.onCall(async (data, context) => {
   const suggestions = buildAiSuggestions(data.keywords || []);
   return { suggestions };
+});
+
+exports.evaluateRules = functions.https.onCall(async (data, context) => {
+  const rules = Array.isArray(data.rules) ? data.rules : [];
+  const businessData = data.businessData || {};
+
+  const results = rules.map((rule) => {
+    const handler = triggerHandlers[rule.triggerType];
+    const triggered = handler ? handler(businessData, rule) : false;
+    return {
+      ruleId: rule.documentId || rule.id || null,
+      triggerType: rule.triggerType,
+      triggered,
+    };
+  });
+
+  return { results };
 });
 
 async function assignDealsToUsersByPreferenceInternal(dealId, dealData) {
