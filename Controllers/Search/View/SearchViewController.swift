@@ -169,7 +169,7 @@ class SearchViewController: UIViewController {
         if tableData.isEmpty {
             activityIndicatorContainer.startActivityAnimating()
         }
-        FirestoreManager.shared.fetchDeals { [unowned self] deals in
+        FirestoreManager.shared.fetchAvailableDeals { [unowned self] deals in
             self.activityIndicatorContainer.stopActivityAnimating()
             self.allDeals = deals?.filter { $0.approved }
             self.filterDeals()
@@ -230,13 +230,9 @@ class SearchViewController: UIViewController {
     }
     
     func fetchDeals(category: DealCategory) {
-        FirestoreManager.shared.fetchDeals(categoryId: category.documentId) { [weak self] data in
-            guard let self = self else { return }
-
-            self.activityIndicatorContainer.stopActivityAnimating()
-            self.tableData = (data ?? []).filter { $0.approved }
-            self.noDealsView.isHidden = !self.tableData.isEmpty
-        }
+        activityIndicatorContainer.stopActivityAnimating()
+        tableData = (allDeals ?? []).filter { $0.categories.contains(category.documentId) }
+        noDealsView.isHidden = !tableData.isEmpty
     }
     
     func loadCategories() {
