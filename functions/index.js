@@ -8,6 +8,7 @@ const {v4: uuidv4} = require('uuid');
 const pLimit = require('p-limit');
 const {triggerHandlers} = require('./triggerHandlers');
 const {createAdapter} = require('./eposAdapters');
+const {runSmartDealTriggers} = require('./smartDealTriggers');
 
 admin.initializeApp();
 const storage = new Storage();
@@ -513,6 +514,34 @@ exports.scheduledRuleAdjustment = functions.pubsub
     }
 
     const tasks = businessesSnap.docs.map((doc) => limit(() => processBusiness(doc)));
+    await Promise.all(tasks);
+
+    return null;
+  });
+
+exports.generateSmartDeals = functions.pubsub
+  .schedule('every 24 hours')
+  .onRun(async () => {
+    const db = admin.firestore();
+    const businessesSnap = await db.collection('businesses').get();
+    const timestamp = admin.firestore.FieldValue.serverTimestamp();
+    const limit = pLimit(5);
+
+    async function processBusiness(doc) {
+      const businessId = doc.id;
+      try {
+        const metrics = await fetchEposMetrics(businessId);
+        const deals = await runSmartDealTriggers(metrics, { businessId });
+        await db
+          .collection('smartDeals')
+          .doc(businessId)
+          .set({ deals, updatedAt: timestamp, status: 'pending' });
+      } catch (err) {
+        console.error(`Failed generating smart deals for ${businessId}:`, err);
+      }
+    }
+
+    const tasks = businessesSnap.docs.map((d) => limit(() => processBusiness(d)));
     await Promise.all(tasks);
 
     return null;
