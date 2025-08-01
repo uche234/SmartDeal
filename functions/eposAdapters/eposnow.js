@@ -1,7 +1,13 @@
+// Adapter for interacting with the EposNow POS API.
 const axios = require('axios');
 const BaseAdapter = require('./baseAdapter');
 
 class EposNowAdapter extends BaseAdapter {
+  /**
+   * Fetch recent sales from EposNow.
+   * @param {object} [options] Optional query parameters.
+   * @returns {Promise<Array>} Array of sales records.
+   */
   async fetchSales(options = {}) {
     try {
       if (this.config?.baseUrl) {
@@ -17,6 +23,11 @@ class EposNowAdapter extends BaseAdapter {
     return [{ id: 'mock', total: 0 }];
   }
 
+  /**
+   * Fetch inventory information from EposNow.
+   * @param {object} [options] Optional query parameters.
+   * @returns {Promise<Array>} Array of inventory items.
+   */
   async fetchInventory(options = {}) {
     try {
       if (this.config?.baseUrl) {
@@ -32,6 +43,11 @@ class EposNowAdapter extends BaseAdapter {
     return [{ id: 'mock', quantity: 0 }];
   }
 
+  /**
+   * Push a deal to EposNow for redemption.
+   * @param {object} deal Deal details to send.
+   * @returns {Promise<object>} Result with success flag and optional error.
+   */
   async pushDeal(deal) {
     try {
       if (this.config?.baseUrl) {
@@ -49,6 +65,10 @@ class EposNowAdapter extends BaseAdapter {
     return { success: true, deal };
   }
 
+  /**
+   * Test API connectivity to EposNow.
+   * @returns {Promise<boolean>} True if credentials are valid.
+   */
   async testConnection() {
     try {
       if (this.config?.baseUrl) {

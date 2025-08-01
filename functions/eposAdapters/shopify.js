@@ -1,7 +1,13 @@
+// Adapter for interacting with the Shopify API.
 const axios = require('axios');
 const BaseAdapter = require('./baseAdapter');
 
 class ShopifyAdapter extends BaseAdapter {
+  /**
+   * Fetch recent sales from Shopify.
+   * @param {object} [options] Optional query parameters.
+   * @returns {Promise<Array>} Array of sales records.
+   */
   async fetchSales(options = {}) {
     try {
       if (this.config?.baseUrl) {
@@ -17,6 +23,11 @@ class ShopifyAdapter extends BaseAdapter {
     return [{ id: 'mock', total: 0 }];
   }
 
+  /**
+   * Fetch inventory information from Shopify.
+   * @param {object} [options] Optional query parameters.
+   * @returns {Promise<Array>} Array of inventory items.
+   */
   async fetchInventory(options = {}) {
     try {
       if (this.config?.baseUrl) {
@@ -32,6 +43,11 @@ class ShopifyAdapter extends BaseAdapter {
     return [{ id: 'mock', quantity: 0 }];
   }
 
+  /**
+   * Push a deal to Shopify for redemption.
+   * @param {object} deal Deal details to send.
+   * @returns {Promise<object>} Result with success flag and optional error.
+   */
   async pushDeal(deal) {
     try {
       if (this.config?.baseUrl) {
@@ -51,6 +67,10 @@ class ShopifyAdapter extends BaseAdapter {
     return { success: true, deal };
   }
 
+  /**
+   * Test API connectivity to Shopify.
+   * @returns {Promise<boolean>} True if credentials are valid.
+   */
   async testConnection() {
     try {
       if (this.config?.baseUrl) {
