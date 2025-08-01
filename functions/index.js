@@ -403,10 +403,21 @@ exports.scheduledRuleCheck = functions.pubsub
             .doc(businessId)
             .collection('activeDeal')
             .add(dealData);
+          console.log(
+            `Trigger ${result.triggerType} fired for ${businessId}, generated 1 deal`
+          );
         } catch (err) {
           console.error(`Failed to create activeDeal for ${businessId}:`, err);
         }
-        await logDealActivation(businessId, { ruleId: result.ruleId, salesTotal, inventoryTotal });
+        try {
+          await logDealActivation(businessId, {
+            ruleId: result.ruleId,
+            salesTotal,
+            inventoryTotal,
+          });
+        } catch (err) {
+          console.error(`Failed to log deal activation for ${businessId}:`, err);
+        }
       }
       } catch (err) {
         console.error(`Error processing business ${businessId}:`, err);
@@ -537,6 +548,9 @@ exports.generateSmartDeals = functions.pubsub
           .collection('smartDeals')
           .doc(businessId)
           .set({ deals, quietInfo, updatedAt: timestamp, status: 'pending' });
+        console.log(
+          `generateSmartDeals processed ${businessId}, generated ${deals.length} deals`
+        );
       } catch (err) {
         console.error(`Failed generating smart deals for ${businessId}:`, err);
       }
