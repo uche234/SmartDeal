@@ -3,7 +3,6 @@
 const functions = require('firebase-functions');
 const admin = require('firebase-admin');
 const axios = require('axios');
-const xml2js = require('xml2js');
 const csv = require('csv-parser');
 const {Storage} = require('@google-cloud/storage');
 const {v4: uuidv4} = require('uuid');
@@ -151,17 +150,6 @@ async function fetchUkHolidays() {
   }
 }
 
-exports.fetchExternalData = functions.https.onRequest(async (req, res) => {
-  try {
-    const response = await axios.get('https://example.com/data.xml');
-    const parsed = await xml2js.parseStringPromise(response.data);
-    res.json(parsed);
-  } catch (err) {
-    console.error('fetchExternalData error:', err);
-    res.status(500).send(err.message);
-  }
-});
-
 exports.initializeBusinessRules = functions.firestore
   .document('businesses/{businessId}')
   .onCreate(async (snap, context) => {
@@ -178,17 +166,31 @@ exports.initializeBusinessRules = functions.firestore
     const avgInventory =
       inventoryData.length > 0 ? inventoryTotal / inventoryData.length : 0;
 
+    const data = snap.data() || {};
     let upcomingHoliday = null;
     let temperature = null;
     try {
-      const holidayRes = await axios.get('https://example.com/holidays');
-      upcomingHoliday = holidayRes.data?.upcomingHoliday || null;
+      const holidays = await fetchUkHolidays();
+      const today = new Date();
+      const next = holidays
+        .map((h) => new Date(h))
+        .filter((d) => !isNaN(d) && d >= today)
+        .sort((a, b) => a - b)[0];
+      if (next) {
+        upcomingHoliday = next.toISOString().slice(0, 10);
+      }
     } catch (err) {
       console.error('initializeBusinessRules holiday fetch error:', err.message);
     }
     try {
-      const weatherRes = await axios.get('https://example.com/weather');
-      temperature = weatherRes.data?.temperature || null;
+      const loc = data.businessLocation || data.location || data.lastLocation || null;
+      if (loc && (loc.latitude ?? loc._latitude) != null) {
+        const lat = loc.latitude ?? loc._latitude ?? loc.lat;
+        const lon = loc.longitude ?? loc._longitude ?? loc.lon;
+        if (lat != null && lon != null) {
+          temperature = await fetchWeather(lat, lon);
+        }
+      }
     } catch (err) {
       console.error('initializeBusinessRules weather fetch error:', err.message);
     }
