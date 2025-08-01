@@ -50,6 +50,14 @@ scheduled Cloud Function. The document contains:
 
 Only the business that owns the document may read or modify it.
 
+### External Metrics Update
+
+The `updateExternalMetrics` job runs every 24 hours. It reads each business
+record, fetches the current weather for the business location using the
+Open‑Meteo API and downloads the list of UK public holidays. The job stores the
+temperature and array of holiday dates back under `businesses/{businessId}` so
+rules such as `weather_cold` and `public_holiday` have the latest data.
+
 ## Packaging a Release
 
 To bundle the cloud functions, iOS source and any available PDF documentation into a single archive run:
