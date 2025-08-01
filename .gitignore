@@ -63,3 +63,6 @@ fastlane/test_output
 functions/node_modules/
 functions/package-lock.json
 
+dashboard/node_modules/
+dashboard/package-lock.json
+dashboard/dist/
