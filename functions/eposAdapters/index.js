@@ -1,3 +1,6 @@
+/**
+ * Export a factory for creating EPOS adapters based on the requested provider.
+ */
 const SquareAdapter = require('./square');
 const LightspeedAdapter = require('./lightspeed');
 const CloverAdapter = require('./clover');

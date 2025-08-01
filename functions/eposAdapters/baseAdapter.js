@@ -1,3 +1,7 @@
+/**
+ * Base class for EPOS adapter implementations. Each adapter should extend this
+ * class and override the data access methods.
+ */
 class BaseAdapter {
   async fetchSales(options = {}) {
     void options;
