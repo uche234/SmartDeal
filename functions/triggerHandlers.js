@@ -122,3 +122,38 @@ function checkQuietPeriods(metrics = {}) {
 }
 
 module.exports.checkQuietPeriods = checkQuietPeriods;
+
+async function checkLoyaltyGap(businessId, days = 14, db) {
+  if (!db) {
+    try {
+      // Delay requiring admin until runtime so the module can be used without Firebase initialized
+      const admin = require('firebase-admin');
+      db = admin.firestore();
+    } catch (err) {
+      throw new Error('Firestore instance required');
+    }
+  }
+
+  const cutoff = new Date(Date.now() - days * oneDayMs);
+  const snap = await db
+    .collection('businesses')
+    .doc(businessId)
+    .collection('customers')
+    .where('lastPurchase', '<=', cutoff)
+    .get();
+
+  const deals = [];
+  snap.forEach((doc) => {
+    deals.push({
+      customerId: doc.id,
+      discount: 0.1,
+      bonusPoints: 50,
+      message:
+        'Thanks for being a customer! Enjoy 10% off and 50 bonus points on your next visit.',
+    });
+  });
+
+  return deals;
+}
+
+module.exports.checkLoyaltyGap = checkLoyaltyGap;
