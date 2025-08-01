@@ -23,7 +23,7 @@ Module._load = function(request, parent, isMain) {
   if (request === 'p-limit') {
     return () => (fn) => fn();
   }
-  if (['axios', 'xml2js', 'csv-parser'].includes(request)) {
+  if (['axios', 'csv-parser'].includes(request)) {
     return {};
   }
   return originalLoad(request, parent, isMain);

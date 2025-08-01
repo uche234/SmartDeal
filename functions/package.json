@@ -13,7 +13,6 @@
     "firebase-functions": "^4.0.0",
     "firebase-admin": "^11.0.0",
     "axios": "^1.0.0",
-    "xml2js": "^0.4.0",
     "csv-parser": "^3.0.0",
     "@google-cloud/storage": "^6.0.0",
     "uuid": "^9.0.0",
