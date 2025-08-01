@@ -121,6 +121,36 @@ async function logDealActivation(businessId, entry = {}) {
   await writeDealHistoryEntry(businessId, data);
 }
 
+async function fetchWeather(lat, lon) {
+  const url =
+    `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true`;
+  try {
+    const res = await axios.get(url);
+    return res.data?.current_weather?.temperature ?? null;
+  } catch (err) {
+    console.error('fetchWeather error:', err.message);
+    return null;
+  }
+}
+
+async function fetchUkHolidays() {
+  try {
+    const res = await axios.get('https://www.gov.uk/bank-holidays.json');
+    const holidays = [];
+    const regions = res.data || {};
+    for (const key of Object.keys(regions)) {
+      const events = regions[key]?.events || [];
+      for (const ev of events) {
+        if (ev && ev.date) holidays.push(ev.date);
+      }
+    }
+    return holidays;
+  } catch (err) {
+    console.error('fetchUkHolidays error:', err.message);
+    return [];
+  }
+}
+
 exports.fetchExternalData = functions.https.onRequest(async (req, res) => {
   try {
     const response = await axios.get('https://example.com/data.xml');
@@ -408,13 +438,15 @@ exports.scheduledRuleCheck = functions.pubsub
       try {
         let businessData = businessDoc.data() || {};
 
-      const { salesTotal, inventoryTotal } = await fetchEposMetrics(businessId);
+        const { salesTotal, inventoryTotal } = await fetchEposMetrics(businessId);
 
-      businessData = {
-        ...businessData,
-        sales: salesTotal,
-        stock: inventoryTotal,
-      };
+        businessData = {
+          temperature: businessData.temperature ?? null,
+          publicHolidays: businessData.publicHolidays ?? [],
+          ...businessData,
+          sales: salesTotal,
+          stock: inventoryTotal,
+        };
 
       let rules = [];
       try {
@@ -604,6 +636,50 @@ exports.generateSmartDeals = functions.pubsub
         );
       } catch (err) {
         console.error(`Failed generating smart deals for ${businessId}:`, err);
+      }
+    }
+
+    const tasks = businessesSnap.docs.map((d) => limit(() => processBusiness(d)));
+    await Promise.all(tasks);
+
+    return null;
+  });
+
+exports.updateExternalMetrics = functions.pubsub
+  .schedule('every 24 hours')
+  .onRun(async () => {
+    const db = admin.firestore();
+    const businessesSnap = await db.collection('businesses').get();
+    const holidays = await fetchUkHolidays();
+    const limit = pLimit(5);
+
+    async function processBusiness(doc) {
+      const businessId = doc.id;
+      const data = doc.data() || {};
+      const loc =
+        data.businessLocation || data.location || data.lastLocation || null;
+      let temperature = null;
+      if (loc && (loc.latitude ?? loc._latitude) != null) {
+        const lat = loc.latitude ?? loc._latitude ?? loc.lat;
+        const lon = loc.longitude ?? loc._longitude ?? loc.lon;
+        if (lat != null && lon != null) {
+          temperature = await fetchWeather(lat, lon);
+        }
+      }
+
+      try {
+        await db
+          .collection('businesses')
+          .doc(businessId)
+          .set(
+            {
+              temperature,
+              publicHolidays: holidays,
+            },
+            { merge: true }
+          );
+      } catch (err) {
+        console.error(`updateExternalMetrics failed for ${businessId}:`, err);
       }
     }
 
