@@ -688,3 +688,52 @@ exports.updateExternalMetrics = functions.pubsub
 
     return null;
   });
+
+
+/**
+ * Generate birthday deals for customers with birthdays today.
+ * @param {FirebaseFirestore.Firestore} db - Firestore instance.
+ * @returns {Promise<void>}
+ */
+async function generateBirthdayDealsInternal(db) {
+  const snap = await db.collection('Customers').get();
+  const today = new Date();
+  const d = today.getUTCDate();
+  const m = today.getUTCMonth();
+  const timestamp = admin.firestore.FieldValue.serverTimestamp();
+  const batch = db.batch();
+  let count = 0;
+  snap.forEach((doc) => {
+    const data = doc.data() || {};
+    let bd = data.birthDate;
+    if (!bd) return;
+    if (bd.toDate) bd = bd.toDate();
+    else bd = new Date(bd);
+    if (bd.getUTCDate() === d && bd.getUTCMonth() === m) {
+      const ref = db
+        .collection('Customers')
+        .doc(doc.id)
+        .collection('availableDeals')
+        .doc();
+      batch.set(ref, {
+        type: 'birthday',
+        promotion: 'Happy Birthday! Enjoy 20% off your next purchase.',
+        createdAt: timestamp,
+      });
+      count++;
+    }
+  });
+  if (count > 0) {
+    await batch.commit();
+  }
+}
+
+exports.generateBirthdayDealsInternal = generateBirthdayDealsInternal;
+
+exports.generateBirthdayDeals = functions.pubsub
+  .schedule('every 24 hours')
+  .onRun(async () => {
+    const db = admin.firestore();
+    await generateBirthdayDealsInternal(db);
+    return null;
+  });
