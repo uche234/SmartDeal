@@ -111,6 +111,25 @@ following to test the rule system:
 
 The function responds with a list of results showing whether each rule was
 triggered based on the provided business data.
+### Birthday Rule Example
+
+To trigger a promotion on a customer's birthday you can create a rule like:
+
+```json
+{
+  "documentId": "birthday1",
+  "triggerType": "birthday"
+}
+```
+
+When evaluating the rule supply the customer's date of birth in `businessData.birthday`:
+
+```json
+{
+  "birthday": "1990-05-12"
+}
+```
+
 
 ## EPOS Provider Configuration
 
