@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>SmartDeal Dashboard</title>
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; }
+    .deal { border: 1px solid #ccc; padding: 10px; margin-bottom: 10px; }
+    .deal textarea { width: 100%; height: 60px; }
+    .actions button { margin-right: 5px; }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+  <script type="text/javascript">
+    const { useState, useEffect } = React;
+
+    // Replace with your Firebase project config
+    const firebaseConfig = {
+      apiKey: "YOUR_API_KEY",
+      authDomain: "YOUR_AUTH_DOMAIN",
+      projectId: "YOUR_PROJECT_ID"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+
+    function Dashboard() {
+      const [businessId, setBusinessId] = useState('');
+      const [deals, setDeals] = useState([]);
+
+      async function loadDeals(id) {
+        if (!id) return;
+        const doc = await db.collection('smartDeals').doc(id).get();
+        if (doc.exists) {
+          setDeals(doc.data().deals || []);
+        } else {
+          setDeals([]);
+        }
+      }
+
+      useEffect(() => {
+        if (businessId) loadDeals(businessId);
+      }, [businessId]);
+
+      function updateDeals(newDeals) {
+        setDeals(newDeals);
+        db.collection('smartDeals').doc(businessId).update({ deals: newDeals });
+      }
+
+      function approve(index) {
+        const newDeals = deals.slice();
+        newDeals[index] = { ...newDeals[index], status: 'approved' };
+        updateDeals(newDeals);
+        db.collection('businesses')
+          .doc(businessId)
+          .collection('activeDeal')
+          .add(newDeals[index]);
+      }
+
+      function dismiss(index) {
+        const newDeals = deals.slice();
+        newDeals[index] = { ...newDeals[index], status: 'dismissed' };
+        updateDeals(newDeals);
+      }
+
+      function handleChange(index, value) {
+        const newDeals = deals.slice();
+        newDeals[index] = { ...newDeals[index], description: value };
+        setDeals(newDeals);
+      }
+
+      function saveEdit(index) {
+        const newDeals = deals.slice();
+        updateDeals(newDeals);
+      }
+
+      return React.createElement('div', null,
+        React.createElement('h2', null, 'Smart Deals Dashboard'),
+        React.createElement('div', null,
+          'Business ID: ',
+          React.createElement('input', {
+            value: businessId,
+            onChange: e => setBusinessId(e.target.value),
+            placeholder: 'Enter business ID'
+          }),
+          React.createElement('button', { onClick: () => loadDeals(businessId) }, 'Load')
+        ),
+        deals.map((deal, idx) =>
+          React.createElement('div', { key: idx, className: 'deal' },
+            React.createElement('strong', null, deal.title || `Deal ${idx + 1}`),
+            React.createElement('div', null,
+              React.createElement('textarea', {
+                value: deal.description || '',
+                onChange: e => handleChange(idx, e.target.value)
+              })
+            ),
+            React.createElement('div', { className: 'actions' },
+              React.createElement('button', { onClick: () => approve(idx) }, 'Approve'),
+              React.createElement('button', { onClick: () => dismiss(idx) }, 'Dismiss'),
+              React.createElement('button', { onClick: () => saveEdit(idx) }, 'Save Edit')
+            )
+          )
+        )
+      );
+    }
+
+    ReactDOM.render(React.createElement(Dashboard), document.getElementById('root'));
+  </script>
+</body>
+</html>
