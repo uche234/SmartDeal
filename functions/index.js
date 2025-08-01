@@ -1,3 +1,5 @@
+// Entry point for SmartDeal Cloud Functions. Provides initialization,
+// scheduled tasks and helper utilities used across the project.
 const functions = require('firebase-functions');
 const admin = require('firebase-admin');
 const axios = require('axios');
@@ -13,6 +15,11 @@ const {runSmartDealTriggers} = require('./smartDealTriggers');
 admin.initializeApp();
 const storage = new Storage();
 
+/**
+ * Load the EPOS adapter configured for a business.
+ * @param {string} businessId - ID of the business document.
+ * @returns {Promise<object|null>} Adapter instance or null if none configured.
+ */
 async function loadEposAdapter(businessId) {
   try {
     const snap = await admin
@@ -41,6 +48,12 @@ async function loadEposAdapter(businessId) {
   }
 }
 
+/**
+ * Fetch sales and inventory metrics for a business.
+ * @param {string} businessId - ID of the business.
+ * @param {number} [days=7] - Number of days of history to retrieve.
+ * @returns {Promise<{salesData:Array,inventoryData:Array,salesTotal:number,inventoryTotal:number}>}
+ */
 async function fetchEposMetrics(businessId, days = 7) {
   const adapter = await loadEposAdapter(businessId);
   let salesData = [];
@@ -73,6 +86,12 @@ async function fetchEposMetrics(businessId, days = 7) {
   return { salesData, inventoryData, salesTotal, inventoryTotal };
 }
 
+/**
+ * Record a deal history entry for analytics.
+ * @param {string} businessId - ID of the business.
+ * @param {object} entry - Data describing the event.
+ * @returns {Promise<void>}
+ */
 async function writeDealHistoryEntry(businessId, entry) {
   try {
     await admin
@@ -88,6 +107,12 @@ async function writeDealHistoryEntry(businessId, entry) {
   }
 }
 
+/**
+ * Log that a deal has been activated for a business.
+ * @param {string} businessId - ID of the business.
+ * @param {object} [entry={}] - Additional data about the activation.
+ * @returns {Promise<void>}
+ */
 async function logDealActivation(businessId, entry = {}) {
   const data = {
     timestamp: admin.firestore.FieldValue.serverTimestamp(),
@@ -213,6 +238,12 @@ exports.aiRecommendation = functions.https.onCall(async (data, context) => {
   return { suggestions };
 });
 
+/**
+ * Evaluate a list of business rules using provided metrics.
+ * @param {Array} rules - The rule documents to evaluate.
+ * @param {object} businessData - Sales and inventory metrics.
+ * @returns {Array} Evaluation results with trigger status.
+ */
 function evaluateRulesInternal(rules = [], businessData = {}) {
   return rules.map((rule) => {
     const handler = triggerHandlers[rule.triggerType];
@@ -233,6 +264,12 @@ exports.evaluateRules = functions.https.onCall(async (data, context) => {
   return { results };
 });
 
+/**
+ * Assign a newly created deal to customers based on their preferences.
+ * @param {string} dealId - ID of the deal document.
+ * @param {object} dealData - Data describing the deal.
+ * @returns {Promise<void>}
+ */
 async function assignDealsToUsersByPreferenceInternal(dealId, dealData) {
   const category = dealData?.rule?.category;
   const businessType = dealData?.businessType;
@@ -354,6 +391,10 @@ exports.dispatchNotifications = functions.firestore
 
 exports.loadEposAdapter = loadEposAdapter;
 
+/**
+ * Scheduled task that evaluates business rules weekly and generates active deals.
+ * @returns {Promise<null>}
+ */
 exports.scheduledRuleCheck = functions.pubsub
   .schedule('every 7 days')
   .onRun(async () => {
@@ -430,6 +471,11 @@ exports.scheduledRuleCheck = functions.pubsub
     return null;
   });
 
+/**
+ * Scheduled task that recalculates rule thresholds based on recent metrics.
+ * Creates adjustment requests for business owners to approve.
+ * @returns {Promise<null>}
+ */
 exports.scheduledRuleAdjustment = functions.pubsub
   .schedule('every 7 days')
   .onRun(async () => {
@@ -530,6 +576,11 @@ exports.scheduledRuleAdjustment = functions.pubsub
     return null;
   });
 
+/**
+ * Daily task that builds smart deal suggestions for each business using
+ * collected metrics and trigger logic.
+ * @returns {Promise<null>}
+ */
 exports.generateSmartDeals = functions.pubsub
   .schedule('every 24 hours')
   .onRun(async () => {
