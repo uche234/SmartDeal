@@ -6,7 +6,7 @@ const csv = require('csv-parser');
 const {Storage} = require('@google-cloud/storage');
 const {v4: uuidv4} = require('uuid');
 const pLimit = require('p-limit');
-const {triggerHandlers} = require('./triggerHandlers');
+const {triggerHandlers, checkQuietPeriods} = require('./triggerHandlers');
 const {createAdapter} = require('./eposAdapters');
 const {runSmartDealTriggers} = require('./smartDealTriggers');
 
@@ -532,10 +532,11 @@ exports.generateSmartDeals = functions.pubsub
       try {
         const metrics = await fetchEposMetrics(businessId);
         const deals = await runSmartDealTriggers(metrics, { businessId });
+        const quietInfo = checkQuietPeriods(metrics);
         await db
           .collection('smartDeals')
           .doc(businessId)
-          .set({ deals, updatedAt: timestamp, status: 'pending' });
+          .set({ deals, quietInfo, updatedAt: timestamp, status: 'pending' });
       } catch (err) {
         console.error(`Failed generating smart deals for ${businessId}:`, err);
       }
