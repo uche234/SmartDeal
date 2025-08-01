@@ -49,6 +49,12 @@ module.exports.triggerHandlers = {
     return typeof temp === 'number' && temp <= threshold;
   },
 
+  weather_hot(data, rule) {
+    const temp = data.temperature;
+    const threshold = typeof rule.threshold === 'number' ? rule.threshold : 0;
+    return typeof temp === 'number' && temp >= threshold;
+  },
+
   news_keyword(data, rule) {
     const keyword = rule.keyword || rule.key;
     const headlines = data.newsHeadlines || [];
