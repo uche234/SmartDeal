@@ -60,3 +60,65 @@ module.exports.triggerHandlers = {
     );
   },
 };
+
+function checkQuietPeriods(metrics = {}) {
+  const salesData = Array.isArray(metrics.salesData) ? metrics.salesData : [];
+  const inventoryData = Array.isArray(metrics.inventoryData)
+    ? metrics.inventoryData
+    : [];
+
+  const hourlyTotals = new Array(24).fill(0);
+  const dayTotals = new Array(7).fill(0);
+
+  for (const sale of salesData) {
+    const ts =
+      sale.timestamp || sale.date || sale.time || sale.createdAt || sale.created;
+    const amount = sale.total || sale.amount || 0;
+    if (!ts) continue;
+    const d = ts instanceof Date ? ts : new Date(ts);
+    const hr = d.getHours();
+    const day = d.getDay();
+    hourlyTotals[hr] += amount;
+    dayTotals[day] += amount;
+  }
+
+  const totalSales = hourlyTotals.reduce((a, b) => a + b, 0);
+  const avgHourly = totalSales / 24 || 0;
+  const avgDaily = totalSales / 7 || 0;
+
+  const quietHours = hourlyTotals
+    .map((v, i) => ({ hour: i, total: v }))
+    .filter((h) => h.total < avgHourly * 0.5)
+    .map((h) => h.hour);
+
+  const quietDays = dayTotals
+    .map((v, i) => ({ day: i, total: v }))
+    .filter((d) => d.total < avgDaily * 0.8)
+    .map((d) => d.day);
+
+  const itemSalesMap = Object.create(null);
+  for (const sale of salesData) {
+    const items = Array.isArray(sale.items) ? sale.items : [];
+    for (const item of items) {
+      const id = item.id || item.sku;
+      if (!id) continue;
+      const qty = item.quantity || 1;
+      itemSalesMap[id] = (itemSalesMap[id] || 0) + qty;
+    }
+  }
+
+  const lowSalesItems = [];
+  for (const item of inventoryData) {
+    const id = item.id || item.sku;
+    if (!id) continue;
+    const stock = item.quantity || 0;
+    const sold = itemSalesMap[id] || 0;
+    if (stock > 0 && sold < stock * 0.1) {
+      lowSalesItems.push({ itemId: id, stock, sold });
+    }
+  }
+
+  return { quietHours, quietDays, suggestedItems: lowSalesItems };
+}
+
+module.exports.checkQuietPeriods = checkQuietPeriods;
