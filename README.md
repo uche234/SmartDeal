@@ -56,7 +56,8 @@ The `updateExternalMetrics` job runs every 24 hours. It reads each business
 record, fetches the current weather for the business location using the
 Open‑Meteo API and downloads the list of UK public holidays. The job stores the
 temperature and array of holiday dates back under `businesses/{businessId}` so
-rules such as `weather_cold` and `public_holiday` have the latest data.
+rules such as `weather_hot`, `weather_cold` and `public_holiday` have the
+latest data.
 
 ## Packaging a Release
 
@@ -85,6 +86,7 @@ data. The evaluation logic relies on a set of **trigger handlers** located in
 | ----------------- | ------------------------------------------------------------------------------------------------------------------------ |
 | `public_holiday`  | Triggered when `businessData.publicHolidays` includes today's date or `businessData.isPublicHoliday` is `true`.           |
 | `weather_cold`    | Fires when `businessData.temperature` is less than or equal to the rule's `threshold` value.                              |
+| `weather_hot`     | Fires when `businessData.temperature` is greater than or equal to the rule's `threshold` value.                           |
 | `news_keyword`    | Looks for `rule.keyword` inside the array `businessData.newsHeadlines`.                                                   |
 | `surplus_stock`   | Checks if `businessData.stock` is greater than the rule `threshold`.                                                      |
 | `expiration_soon` | Triggered when `businessData.expirationDate` is within `threshold` days from today.                                       |
@@ -99,11 +101,11 @@ following to test the rule system:
 ```json
 {
   "rules": [
-    { "documentId": "rule1", "triggerType": "weather_cold", "threshold": 5 },
+    { "documentId": "rule1", "triggerType": "weather_hot", "threshold": 25 },
     { "documentId": "rule2", "triggerType": "surplus_stock", "threshold": 50 }
   ],
   "businessData": {
-    "temperature": 3,
+    "temperature": 30,
     "stock": 80
   }
 }
